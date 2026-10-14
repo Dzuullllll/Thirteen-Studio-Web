@@ -460,13 +460,15 @@ $('#h-cta').innerHTML =
 if (C.ticker.enabled && C.ticker.items.length) {
   const row = C.ticker.items.map(t => `<span>${esc(t)}</span>`).join('');
   const track = $('#ticker-track');
+  $('#ticker').hidden = false;           // harus tampil dulu supaya lebarnya bisa diukur
   track.innerHTML = row;
-  // ulangi sampai lebih lebar dari layar, lalu gandakan untuk loop mulus
-  while (track.scrollWidth < window.innerWidth * 1.2) track.innerHTML += row;
+  // ulangi sampai lebih lebar dari layar (maks 20x sebagai pengaman), lalu gandakan untuk loop mulus
+  let guard = 0;
+  while (track.scrollWidth > 0 && track.scrollWidth < window.innerWidth * 1.2 && guard++ < 20) track.innerHTML += row;
   track.innerHTML += track.innerHTML;
-  $('#ticker').hidden = false;
-  const setSpeed = () => track.style.setProperty('--dur', (track.scrollWidth / 2 / C.ticker.speed) + 's');
+  const setSpeed = () => track.style.setProperty('--dur', Math.max(10, track.scrollWidth / 2 / C.ticker.speed) + 's');
   setSpeed();
+  window.addEventListener('resize', setSpeed);
 }
 
 /* ---------- Fitur ---------- */
