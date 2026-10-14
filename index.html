@@ -32,11 +32,29 @@ const SITE_CONFIG = {
     // ===== MUSIC =====
     music: {
         enabled: true,
-        startVolume: 0.075,
-        droneFrequency: 110,
-        fifthFrequency: 164.81,
-        shimmerFrequency: 329.63
+        autoplay: false,
+        file: "assets/nature_ambient.wav",
+        volume: 0.42
     },
+
+    // ===== ROBLOX EXPERIENCE SHOWCASE =====
+    // Tambahkan/edit project di sini. Gambar juga diatur dari sini.
+    projects: [
+        {
+            title: "Mount Niskala Expedition",
+            category: "Expedition / Wilderness",
+            description: "Petualangan pendakian medan realistis dengan atmosfer guram, tebing terjal, dan sistem pencahayaan kabut alami.",
+            image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85",
+            link: "https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition"
+        },
+        {
+            title: "Santara",
+            category: "Nature / Landscape",
+            description: "Eksplorasi keindahan eksotis alam fantasi terbuka dengan vegetasi rimbun, air terjun, dan pencahayaan dinamis.",
+            image: "https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=85",
+            link: "https://www.roblox.com/id/games/89877678091980/Santara"
+        }
+    ],
 
     // ===== BACKGROUND =====
     background: {
@@ -92,116 +110,6 @@ window.THirteenConfig = SITE_CONFIG;
 
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com">
-    // ================= FALLING LEAVES =================
-    const leafLayer = document.getElementById('leaf-layer');
-    const leafConfig = SITE_CONFIG.leaves;
-    const leafCount = window.innerWidth < 700
-        ? leafConfig.mobileCount
-        : leafConfig.desktopCount;
-
-    for (let i = 0; i < leafCount; i++) {
-        const leaf = document.createElement('span');
-        leaf.className = 'falling-leaf';
-        leaf.style.left = `${Math.random() * 100}%`;
-        leaf.style.setProperty(
-            '--size',
-            `${leafConfig.minSize + Math.random() * (leafConfig.maxSize - leafConfig.minSize)}px`
-        );
-        leaf.style.setProperty('--opacity', `${0.18 + Math.random() * 0.36}`);
-        leaf.style.setProperty(
-            '--duration',
-            `${leafConfig.minDuration + Math.random() * (leafConfig.maxDuration - leafConfig.minDuration)}s`
-        );
-        leaf.style.setProperty('--delay', `${-Math.random() * 18}s`);
-        leaf.style.setProperty('--drift', `${-90 + Math.random() * 180}px`);
-        leaf.style.setProperty('--rot', `${Math.random() * 360}deg`);
-        leafLayer.appendChild(leaf);
-    }
-
-    // ================= PROCEDURAL AMBIENT MUSIC =================
-    let audioCtx = null;
-    let masterGain = null;
-    let ambientStarted = false;
-    let musicMuted = true;
-    let musicTimer = null;
-
-    const musicButton = document.getElementById('music-toggle');
-    const musicIcon = document.getElementById('music-icon');
-
-    function createAmbientMusic() {
-        if (ambientStarted) return;
-
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        masterGain = audioCtx.createGain();
-        masterGain.gain.value = 0.0001;
-        masterGain.connect(audioCtx.destination);
-
-        // Soft low drone + high shimmer. No external audio file is needed.
-        const drone = audioCtx.createOscillator();
-        const droneGain = audioCtx.createGain();
-        drone.type = 'sine';
-        drone.frequency.value = SITE_CONFIG.music.droneFrequency;
-        droneGain.gain.value = 0.045;
-        drone.connect(droneGain).connect(masterGain);
-        drone.start();
-
-        const fifth = audioCtx.createOscillator();
-        const fifthGain = audioCtx.createGain();
-        fifth.type = 'triangle';
-        fifth.frequency.value = SITE_CONFIG.music.fifthFrequency;
-        fifthGain.gain.value = 0.018;
-        fifth.connect(fifthGain).connect(masterGain);
-        fifth.start();
-
-        const shimmer = audioCtx.createOscillator();
-        const shimmerGain = audioCtx.createGain();
-        shimmer.type = 'sine';
-        shimmer.frequency.value = SITE_CONFIG.music.shimmerFrequency;
-        shimmerGain.gain.value = 0.008;
-        shimmer.connect(shimmerGain).connect(masterGain);
-        shimmer.start();
-
-        // Very slow breathing volume.
-        const now = audioCtx.currentTime;
-        masterGain.gain.setValueAtTime(0.0001, now);
-        masterGain.gain.exponentialRampToValueAtTime(SITE_CONFIG.music.startVolume, now + 2.2);
-
-        ambientStarted = true;
-        musicMuted = false;
-        musicButton.classList.add('is-playing');
-        musicIcon.setAttribute('data-lucide', 'volume-2');
-        lucide.createIcons();
-    }
-
-    function toggleMusic() {
-        if (!ambientStarted) {
-            createAmbientMusic();
-            return;
-        }
-
-        if (musicMuted) {
-            audioCtx.resume();
-            masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            masterGain.gain.exponentialRampToValueAtTime(SITE_CONFIG.music.startVolume, audioCtx.currentTime + 1.2);
-            musicMuted = false;
-            musicButton.classList.add('is-playing');
-            musicIcon.setAttribute('data-lucide', 'volume-2');
-        } else {
-            masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
-            musicMuted = true;
-            musicButton.classList.remove('is-playing');
-            musicIcon.setAttribute('data-lucide', 'volume-x');
-        }
-        lucide.createIcons();
-    }
-
-    musicButton.addEventListener('click', toggleMusic);
-
-    // Keep the site's visual state permanently in dark mode.
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
-
 </script>
 <script>
     tailwind.config = {
@@ -459,7 +367,7 @@ window.THirteenConfig = SITE_CONFIG;
     .leaf-layer {
         position: fixed;
         inset: 0;
-        z-index: 40;
+        z-index: 80;
         pointer-events: none;
         overflow: hidden;
     }
@@ -471,7 +379,7 @@ window.THirteenConfig = SITE_CONFIG;
         height: calc(var(--size) * .58);
         background: linear-gradient(135deg, #9a7621, #d4af37 55%, #6d4e0b);
         border-radius: 100% 0 100% 0;
-        opacity: var(--opacity);
+        opacity: max(0.32, var(--opacity));
         filter: drop-shadow(0 0 5px rgba(212,175,55,.16));
         transform: rotate(var(--rot));
         animation:
@@ -532,7 +440,7 @@ window.THirteenConfig = SITE_CONFIG;
         
         <!-- BRAND LOGO -->
         <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3.5 group">
-            <img src="assets/13studio_logo_transparent.png" alt="Thirteen Studio" class="w-14 h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_18px_rgba(212,175,55,0.22)]">
+            <img src="assets/13studio_logo_transparent.png" data-config-logo="true" alt="Thirteen Studio" class="w-14 h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_18px_rgba(212,175,55,0.22)]">
             <div class="flex flex-col">
                 <span class="font-heading font-extrabold text-lg tracking-widest gradient-brand-text leading-none">THIRTEEN</span>
                 <span class="text-[10px] tracking-[0.35em] text-amber-400/80 font-bold uppercase mt-1">STUDIO</span>
@@ -581,7 +489,7 @@ window.THirteenConfig = SITE_CONFIG;
             <!-- MONUMENTAL TRANSPARENT LOGO -->
             <div class="relative w-72 h-56 md:w-[30rem] md:h-72 mx-auto mb-8 flex items-center justify-center">
                 <div class="absolute inset-8 rounded-full bg-amber-500/10 blur-[70px] animate-pulse"></div>
-                <img src="assets/13studio_logo_transparent.png"
+                <img src="assets/13studio_logo_transparent.png" data-config-logo="true"
                      alt="13 Studio Monument Logo"
                      class="relative z-10 w-full h-full object-contain drop-shadow-[0_0_35px_rgba(212,175,55,0.28)]">
             </div>
@@ -692,7 +600,7 @@ window.THirteenConfig = SITE_CONFIG;
         </div>
 
         <!-- COMMUNITY BANNER -->
-        <div class="reveal dark:bg-slate-900/80 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl shadow-xl">
+        <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl shadow-xl">
             <div class="flex items-center gap-6">
                 <div class="w-16 h-16 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 shrink-0">
                     <i data-lucide="users" class="w-8 h-8"></i>
@@ -945,4 +853,111 @@ window.THirteenConfig = SITE_CONFIG;
 
     window.addEventListener('scroll', triggerScrollReveal);
     window.addEventListener('load', triggerScrollReveal);
+</script>
+
+<script>
+    // ================= FALLING LEAVES =================
+    const leafLayer = document.getElementById('leaf-layer');
+    const leafConfig = SITE_CONFIG.leaves;
+    const leafCount = window.innerWidth < 700
+        ? leafConfig.mobileCount
+        : leafConfig.desktopCount;
+
+    for (let i = 0; i < leafCount; i++) {
+        const leaf = document.createElement('span');
+        leaf.className = 'falling-leaf';
+        leaf.style.left = `${Math.random() * 100}%`;
+        leaf.style.setProperty(
+            '--size',
+            `${leafConfig.minSize + Math.random() * (leafConfig.maxSize - leafConfig.minSize)}px`
+        );
+        leaf.style.setProperty('--opacity', `${0.18 + Math.random() * 0.36}`);
+        leaf.style.setProperty(
+            '--duration',
+            `${leafConfig.minDuration + Math.random() * (leafConfig.maxDuration - leafConfig.minDuration)}s`
+        );
+        leaf.style.setProperty('--delay', `${-Math.random() * 18}s`);
+        leaf.style.setProperty('--drift', `${-90 + Math.random() * 180}px`);
+        leaf.style.setProperty('--rot', `${Math.random() * 360}deg`);
+        leafLayer.appendChild(leaf);
+    }
+
+    // ================= NATURE MUSIC FILE =================
+    const musicButton = document.getElementById('music-toggle');
+    const musicIcon = document.getElementById('music-icon');
+
+    const natureAudio = new Audio(SITE_CONFIG.music.file);
+    natureAudio.loop = true;
+    natureAudio.preload = 'auto';
+    natureAudio.volume = SITE_CONFIG.music.volume;
+
+    let musicPlaying = false;
+
+    function setMusicIcon(playing) {
+        musicIcon.setAttribute('data-lucide', playing ? 'volume-2' : 'volume-x');
+        lucide.createIcons();
+        musicButton.classList.toggle('is-playing', playing);
+        musicButton.title = playing ? 'Mute musik alam' : 'Nyalakan musik alam';
+    }
+
+    async function toggleMusic() {
+        if (!SITE_CONFIG.music.enabled) return;
+
+        if (natureAudio.paused) {
+            try {
+                await natureAudio.play();
+                musicPlaying = true;
+                setMusicIcon(true);
+            } catch (err) {
+                console.warn('Music playback was blocked:', err);
+            }
+        } else {
+            natureAudio.pause();
+            musicPlaying = false;
+            setMusicIcon(false);
+        }
+    }
+
+    musicButton.addEventListener('click', toggleMusic);
+    setMusicIcon(false);
+
+    // Keep the site's visual state permanently in dark mode.
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+
+
+
+    // ================= PROJECT CONFIG BINDING =================
+    function applyProjectConfig() {
+        const projects = SITE_CONFIG.projects || [];
+        const cards = document.querySelectorAll('#tab-creations .grid > div');
+
+        cards.forEach((card, index) => {
+            const project = projects[index];
+            if (!project) return;
+
+            const img = card.querySelector('img');
+            const title = card.querySelector('h3');
+            const desc = card.querySelector('p');
+            const badge = card.querySelector('span');
+            const link = card.querySelector('a');
+
+            if (img) {
+                img.src = project.image;
+                img.alt = project.title;
+            }
+            if (title) title.textContent = project.title;
+            if (desc) desc.textContent = project.description;
+            if (badge) badge.textContent = project.category;
+            if (link) link.href = project.link;
+        });
+    }
+
+    applyProjectConfig();
+
+
+    document.querySelectorAll('[data-config-logo="true"]').forEach(img => {
+        img.src = SITE_CONFIG.brand.logo;
+    });
+
 </script>
