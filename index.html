@@ -1,963 +1,608 @@
-
-
-<!-- =========================================================
-     THIRTEEN STUDIO - WEBSITE CONFIG
-     Edit bagian ini saja untuk mengganti isi website.
-     ========================================================= -->
-<script>
-const SITE_CONFIG = {
-    // ===== BRAND =====
-    brand: {
-        name: "THIRTEEN",
-        studio: "STUDIO",
-        logo: "assets/13studio_logo_transparent.png",
-        pageTitle: "Thirteen Studio — Roblox World Building & Assets"
-    },
-
-    // ===== HERO =====
-    hero: {
-        title: "Crafting Mythic Environments &",
-        highlight: "Roblox Experiences",
-        description: "Arsitek dunia virtual spesialis pembuatan terrain realistis, pencahayaan atmosferik, serta pembentukan aset 3D berkualitas tinggi untuk komunitas Roblox.",
-        primaryButton: "Jelajahi Map",
-        secondaryButton: "Katalog Asset"
-    },
-
-    // ===== SOCIAL / LINKS =====
-    links: {
-        discord: "https://discord.gg/a2hbrNnF6v",
-        robloxGroup: "https://www.roblox.com/share/g/323140740"
-    },
-
-    // ===== MUSIC =====
-    music: {
-        enabled: true,
-        autoplay: false,
-        file: "assets/nature_ambient.wav",
-        volume: 0.42
-    },
-
-    // ===== ROBLOX EXPERIENCE SHOWCASE =====
-    // Tambahkan/edit project di sini. Gambar juga diatur dari sini.
-    projects: [
-        {
-            title: "Mount Niskala Expedition",
-            category: "Expedition / Wilderness",
-            description: "Petualangan pendakian medan realistis dengan atmosfer guram, tebing terjal, dan sistem pencahayaan kabut alami.",
-            image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85",
-            link: "https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition"
-        },
-        {
-            title: "Santara",
-            category: "Nature / Landscape",
-            description: "Eksplorasi keindahan eksotis alam fantasi terbuka dengan vegetasi rimbun, air terjun, dan pencahayaan dinamis.",
-            image: "https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=85",
-            link: "https://www.roblox.com/id/games/89877678091980/Santara"
-        }
-    ],
-
-    // ===== BACKGROUND =====
-    background: {
-        natureImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=85",
-        brightness: 0.32,
-        saturation: 0.55
-    },
-
-    // ===== FALLING LEAVES =====
-    leaves: {
-        enabled: true,
-        desktopCount: 34,
-        mobileCount: 18,
-        minSize: 7,
-        maxSize: 18,
-        minDuration: 10,
-        maxDuration: 23
-    },
-
-    // ===== FOOTER =====
-    footer: {
-        copyright: "THIRTEEN STUDIO",
-        tagline: "Roblox World Building & Assets",
-        creator: "@dzuullllll"
-    }
-};
-
-// Apply basic config values automatically.
-document.title = SITE_CONFIG.brand.pageTitle;
-
-document.documentElement.style.setProperty(
-    '--nature-image',
-    `url("${SITE_CONFIG.background.natureImage}")`
-);
-
-window.THirteenConfig = SITE_CONFIG;
-</script>
-
-<!-- CINEMATIC NATURE BACKGROUND -->
-<div class="nature-bg" aria-hidden="true">
-    <div class="nature-image"></div>
-    <div class="nature-vignette"></div>
-    <div class="nature-gold-haze"></div>
-    <div class="nature-noise"></div>
-</div>
-
-<!-- FALLING LEAVES OVERLAY -->
-<div id="leaf-layer" class="leaf-layer" aria-hidden="true"></div>
-<!-- Google Fonts -->
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thirteen Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.469.0"></script>
 
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com">
-</script>
 <script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-                fontFamily: {
-                    heading: ['Cinzel', 'serif'],
-                    body: ['Plus Jakarta Sans', 'sans-serif'],
-                },
-                colors: {
-                    gold: {
-                        300: '#fde047',
-                        400: '#facc15',
-                        500: '#eab308',
-                        600: '#ca8a04',
-                        glow: '#d4af37',
-                    },
-                    royal: {
-                        400: '#60a5fa',
-                        500: '#3b82f6',
-                        600: '#2563eb',
-                        700: '#1d4ed8',
-                    }
-                }
-            }
-        }
+/* =========================================================
+   THIRTEEN STUDIO — CONFIG
+   Semua isi website diatur dari sini. Tidak perlu edit HTML.
+   ========================================================= */
+const SITE_CONFIG = {
+  brand: {
+    name: "THIRTEEN", studio: "STUDIO",
+    logo: "assets/13studio_logo_transparent.png",
+    pageTitle: "Thirteen Studio — Roblox World Building & Assets"
+  },
+
+  // Menu navigasi (id harus: dashboard, creations, products, commissions)
+  nav: [
+    { id: "dashboard",   label: "Dashboard",         icon: "layout-dashboard" },
+    { id: "creations",   label: "Creations",         icon: "mountain" },
+    { id: "products",    label: "Products & Assets", icon: "box" },
+    { id: "commissions", label: "The Forge",         icon: "hammer" }
+  ],
+
+  hero: {
+    title: "Crafting Mythic Environments &",
+    highlight: "Roblox Experiences",
+    description: "Arsitek dunia virtual spesialis terrain realistis, pencahayaan atmosferik, dan aset 3D berkualitas tinggi untuk komunitas Roblox.",
+    primaryButton:   { label: "Jelajahi Map",  tab: "creations", icon: "compass" },
+    secondaryButton: { label: "Katalog Asset", tab: "products",  icon: "box" }
+  },
+
+  // Running text di bawah tombol hero
+  ticker: {
+    enabled: true,
+    speed: 55,            // piksel per detik (makin besar makin cepat)
+    items: [
+      "Open Commission — Terrain & Environment Design",
+      "Top Up Robux tersedia — tanyakan stok dulu via Discord",
+      "Mount Niskala Expedition sudah rilis",
+      "Santara — eksplorasi alam fantasi terbuka",
+      "Asset PBR siap pakai untuk Roblox Studio"
+    ]
+  },
+
+  links: {
+    discord: "https://discord.gg/a2hbrNnF6v",
+    robloxGroup: "https://www.roblox.com/share/g/323140740"
+  },
+
+  // Musik: autoplay dicoba saat web dibuka. Browser sering memblokir suara otomatis,
+  // jadi jika diblokir, musik mulai pada sentuhan/klik pertama pengunjung.
+  music: {
+    enabled: true, autoplay: true,
+    file: "assets/nature_ambient.wav", volume: 0.42,
+    playTitle: "Matikan musik", muteTitle: "Nyalakan musik"
+  },
+
+  features: [
+    { icon: "mountain", title: "Immersive Terrain",     text: "Landscape pegunungan, alam liar, dan tebing realistis dengan performa yang dioptimasi." },
+    { icon: "layers",   title: "PBR Assets & Models",   text: "Aset arsitektur dan prop 3D siap diintegrasikan langsung ke Roblox Studio." },
+    { icon: "hammer",   title: "Custom Commission",     text: "Pesan dunia kustom lewat The Forge, diselesaikan langsung melalui tiket Discord." }
+  ],
+
+  creations: {
+    badge: "Official Projects", title: "Featured Showcase",
+    subtitle: "Karya dunia Roblox yang pernah kami rancang, dan komunitas resminya.",
+    playLabel: "Play Experience",
+    community: {
+      title: "Thirteen Studio Roblox Group",
+      text: "Gabung grup resmi untuk info rilis map terbaru dan perk eksklusif.",
+      button: "Join Roblox Group"
     }
+  },
+
+  projects: [
+    {
+      title: "Mount Niskala Expedition", category: "Expedition / Wilderness",
+      description: "Petualangan pendakian medan realistis dengan atmosfer guram, tebing terjal, dan pencahayaan kabut alami.",
+      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+      link: "https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition"
+    },
+    {
+      title: "Santara", category: "Nature / Landscape",
+      description: "Eksplorasi alam fantasi terbuka dengan vegetasi rimbun, air terjun, dan pencahayaan dinamis.",
+      image: "https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=80",
+      link: "https://www.roblox.com/id/games/89877678091980/Santara"
+    }
+  ],
+
+  products: {
+    badge: "Asset Store", title: "Asset Catalog",
+    subtitle: "Aset dan layanan siap pakai untuk mempercepat game Anda.",
+    // Tambah / hapus / ubah produk di sini.
+    // askStock: true  -> tombol jadi "tanya stok dulu" (pesan berbeda)
+    // options: [...]  -> pilihan paket (mis. nominal Robux); harga ikut berubah
+    items: [
+      {
+        title: "Top Up Robux",
+        description: "Top up Robux untuk akun Anda. Stok berubah-ubah, jadi tanyakan ketersediaan dulu sebelum membayar.",
+        icon: "coins", image: "",
+        badge: "Tanya stok dulu",
+        askStock: true,
+        buttonLabel: "Tanya Stok via Discord",
+        options: [
+          { label: "100 Robux",   price: "IDR 15k" },
+          { label: "400 Robux",   price: "IDR 55k" },
+          { label: "800 Robux",   price: "IDR 105k" },
+          { label: "1.700 Robux", price: "IDR 215k" }
+        ]
+      },
+      {
+        title: "PBR Rock & Mountain Pack",
+        description: "Paket batu 3D bermaterial PBR tekstur 2K, siap untuk terrain Roblox.",
+        price: "R$ 450 / IDR 50k", buttonLabel: "Beli via Discord",
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Custom Terrain & Island Map",
+        description: "Template pulau dan tebing lengkap dengan water, atmosphere, dan preset lighting.",
+        price: "R$ 800 / IDR 90k", buttonLabel: "Beli via Discord",
+        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Mythic Atmosphere & Lighting",
+        description: "Preset Lighting, Skybox, SunRays, dan Atmosphere mistis untuk visual dramatis.",
+        price: "R$ 300 / IDR 35k", buttonLabel: "Beli via Discord",
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80"
+      }
+    ]
+  },
+
+  forge: {
+    badge: "Custom Order", title: "The Forge",
+    subtitle: "Pahat dunia Roblox impian Anda bersama arsitek Thirteen Studio.",
+    boxTitle: "Alur Pemesanan Custom",
+    boxText: "Kami membuat terrain kustom, environment design, dan map dari nol sesuai narasi game Anda.",
+    steps: [
+      "Isi form deskripsi proyek Anda",
+      "Klik tombol untuk menyalin format pesan",
+      "Kirim ke tiket Discord Thirteen Studio"
+    ],
+    discordButton: "Masuk Server Discord",
+    submitLabel: "Salin Format & Buka Discord",
+    services: [
+      "Custom Mountain & Terrain Sculpting",
+      "Full World Environment Design",
+      "PBR Asset Modeling & Props",
+      "Lighting & Polish Optimization"
+    ]
+  },
+
+  // Template pesan. Pakai {item} {label} {price} {user} {service} {detail}
+  messages: {
+    buy:        "=== THIRTEEN STUDIO ASSET PURCHASE ===\nProduk: {item}\nHarga: {price}",
+    askStock:   "Halo Thirteen Studio, saya ingin {item}: {label} ({price}).\nApakah stok masih tersedia?",
+    commission: "=== THIRTEEN STUDIO COMMISSION ORDER ===\nClient: {user}\nLayanan: {service}\nDetail Proyek: {detail}",
+    copied:     "Pesan disalin. Mengarahkan ke Discord..."
+  },
+
+  background: { natureImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=80" },
+
+  leaves: { enabled: true, desktopCount: 22, mobileCount: 10, minSize: 7, maxSize: 16, minDuration: 12, maxDuration: 24 },
+
+  footer: { copyright: "THIRTEEN STUDIO", tagline: "Roblox World Building & Assets", creator: "@dzuullllll" }
+};
 </script>
 
-<!-- Lucide Icons -->
-<script src="https://unpkg.com/lucide@latest"></script>
-
-<!-- Custom Styling & Animations -->
 <style>
-    body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        transition: background-color 0.4s ease, color 0.4s ease;
-    }
+:root{
+  --gold:#d4af37; --gold-l:#f0d98a; --gold-d:#8f6a14;
+  --ink:#040404; --panel:rgba(12,11,9,.72); --line:rgba(212,175,55,.2);
+  --txt:#f4f0e8; --mute:#a9a39a;
+  --hh:68px; --bn:0px;
+  --pad:clamp(16px,4vw,40px);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--ink);color:var(--txt);font:400 clamp(14px,1.5vw,16px)/1.65 'Plus Jakarta Sans',system-ui,sans-serif;min-height:100svh;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+h1,h2,h3,.brand-name{font-family:Cinzel,serif;letter-spacing:.02em}
 
-    /* Subtle Grid Background Pattern */
-    .bg-grid-dark {
-        background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
-        background-size: 32px 32px;
-    }
-    .bg-grid-light {
-        background-image: radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px);
-        background-size: 32px 32px;
-    }
+/* Latar */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-img{position:absolute;inset:-3%;background:var(--nature) center/cover;filter:saturate(.5) contrast(1.15) brightness(.3);animation:drift 30s ease-in-out infinite alternate}
+.bg-shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(0,0,0,.1),rgba(0,0,0,.78) 72%),linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.9))}
+@keyframes drift{to{transform:scale(1.07) translate(-1%,-.6%)}}
+.leaf-layer{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+.leaf{position:absolute;top:-6vh;width:var(--s);height:calc(var(--s)*.58);background:linear-gradient(135deg,#9a7621,#d4af37 55%,#6d4e0b);border-radius:100% 0;opacity:var(--o);animation:fall var(--d) linear var(--dl) infinite}
+@keyframes fall{from{transform:translate3d(0,-8vh,0) rotate(var(--r))}to{transform:translate3d(var(--dr),112vh,0) rotate(calc(var(--r) + 480deg))}}
 
-    /* Glow Text Effect */
-    .dark .text-glow {
-        text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-    }
-    .light .text-glow {
-        text-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-    }
+/* Header */
+header{position:fixed;inset:0 0 auto 0;height:calc(var(--hh) + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(var(--pad),env(safe-area-inset-left)) 0 max(var(--pad),env(safe-area-inset-right));z-index:50;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(3,3,3,.8);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand img{width:46px;height:36px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(212,175,55,.3))}
+.brand-name{font-weight:800;font-size:1.05rem;letter-spacing:.22em;line-height:1;background:linear-gradient(135deg,var(--gold-l),var(--gold) 55%,var(--gold-d));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-sub{font-size:.62rem;letter-spacing:.38em;color:var(--gold);opacity:.8;margin-top:5px}
+.nav-d{display:flex;gap:4px;padding:5px;border:1px solid var(--line);border-radius:999px;background:rgba(0,0,0,.45)}
+.nav-btn{border:0;background:none;cursor:pointer;color:var(--mute);padding:9px 18px;border-radius:999px;font-weight:600;font-size:.85rem;display:inline-flex;align-items:center;gap:7px;transition:.25s}
+.nav-btn:hover{color:var(--txt)}
+.nav-btn.on{color:var(--gold-l);background:rgba(212,175,55,.12);box-shadow:inset 0 0 0 1px rgba(212,175,55,.3)}
+.actions{display:flex;gap:10px;align-items:center}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,.55);color:var(--gold);display:grid;place-items:center;cursor:pointer;transition:.25s}
+.icon-btn:hover{border-color:var(--gold);transform:scale(1.06)}
+.icon-btn svg{width:19px;height:19px}
+.music .ic-on{display:none}
+.music.playing{background:rgba(212,175,55,.16);border-color:var(--gold);box-shadow:0 0 22px rgba(212,175,55,.25)}
+.music.playing .ic-on{display:grid}
+.music.playing .ic-off{display:none}
+.music:not(.playing){color:var(--mute)}
 
-    /* Golden Gradient Text (Dark) */
-    .dark .gradient-brand-text {
-        background: linear-gradient(135deg, #FFF0B1 0%, #D4AF37 50%, #996515 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+/* Tombol */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 26px;border-radius:999px;font-weight:700;font-size:.88rem;cursor:pointer;border:1px solid var(--line);background:rgba(0,0,0,.5);transition:.25s;text-align:center}
+.btn:hover{transform:translateY(-2px);border-color:var(--gold)}
+.btn:active{transform:scale(.97)}
+.btn svg{width:17px;height:17px}
+.btn.gold{background:linear-gradient(135deg,var(--gold-l),var(--gold) 55%,var(--gold-d));color:#1a1305;border-color:transparent;box-shadow:0 10px 30px rgba(212,175,55,.2)}
+.btn.block{width:100%}
 
-    /* Blue Gradient Text (Light) */
-    .light .gradient-brand-text {
-        background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+/* Layout */
+main{position:relative;z-index:10;padding:calc(var(--hh) + env(safe-area-inset-top) + 24px) max(var(--pad),env(safe-area-inset-left)) calc(60px + var(--bn) + env(safe-area-inset-bottom)) max(var(--pad),env(safe-area-inset-right))}
+.wrap{max-width:1180px;margin:0 auto}
+.tab{display:none}
+.tab.on{display:block;animation:in .5s ease both}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.sec-head{text-align:center;max-width:640px;margin:clamp(20px,5vw,48px) auto clamp(24px,5vw,44px)}
+.sec-head .badge{display:inline-block;font-size:.72rem;color:var(--gold);border:1px solid var(--line);border-radius:999px;padding:5px 16px}
+.sec-head h2{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;margin:14px 0 10px;line-height:1.15}
+.sec-head p,.muted{color:var(--mute)}
+.grid{display:grid;gap:clamp(16px,2.5vw,28px)}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.card{background:linear-gradient(150deg,rgba(16,15,12,.8),rgba(4,4,4,.78));border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .3s,border-color .3s,box-shadow .3s}
+@media (hover:hover){.card.lift:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.5);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 34px rgba(212,175,55,.08)}}
 
-    /* Hover 3D Lift & Glow Cards */
-    .card-hover-effect {
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-    .card-hover-effect:hover {
-        transform: translateY(-8px) scale(1.01);
-    }
-    .dark .card-hover-effect:hover {
-        box-shadow: 0 20px 40px -15px rgba(212, 175, 55, 0.15);
-        border-color: rgba(212, 175, 55, 0.5);
-    }
-    .light .card-hover-effect:hover {
-        box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.18);
-        border-color: rgba(37, 99, 235, 0.5);
-    }
+/* Hero */
+.hero{text-align:center;padding:clamp(8px,4vw,40px) 0 clamp(20px,4vw,40px)}
+.hero-logo{width:min(78vw,400px);height:clamp(110px,26vh,240px);margin:0 auto clamp(12px,3vw,28px);position:relative}
+.hero-logo::before{content:"";position:absolute;inset:15%;border-radius:50%;background:rgba(212,175,55,.14);filter:blur(60px)}
+.hero-logo img{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 30px rgba(212,175,55,.3))}
+.hero h1{font-size:clamp(1.9rem,6.4vw,4.6rem);line-height:1.1;font-weight:800;max-width:15ch;margin:0 auto 18px;text-wrap:balance}
+.hero h1 em{font-style:normal;display:block;background:linear-gradient(135deg,#fff7d6,#e8c76a 48%,#a77a16);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:620px;margin:0 auto 30px;color:var(--mute);font-size:clamp(.95rem,2vw,1.1rem)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 
-    /* Scroll Reveal Animation */
-    .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Running text */
+.ticker{margin:clamp(26px,5vw,44px) calc(var(--pad) * -1) 0;border-block:1px solid var(--line);background:rgba(0,0,0,.5);overflow:hidden;padding:13px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.ticker-track{display:flex;width:max-content;animation:tick var(--dur,40s) linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{white-space:nowrap;padding:0 22px;color:var(--gold-l);font-size:.86rem;font-weight:500;display:inline-flex;align-items:center;gap:44px}
+.ticker-track span::after{content:"◆";color:var(--gold-d);font-size:.55rem}
+@keyframes tick{to{transform:translateX(-50%)}}
 
-    /* Button Click Active Ripple/Scale */
-    .btn-active:active {
-        transform: scale(0.96);
-    }
+.feat{padding:clamp(20px,3vw,32px)}
+.ico{width:52px;height:52px;border-radius:16px;border:1px solid var(--line);background:rgba(212,175,55,.08);display:grid;place-items:center;color:var(--gold);margin-bottom:18px}
+.ico svg{width:24px;height:24px}
+.feat h3,.pbody h3{font-size:1.15rem;margin-bottom:8px}
+.feat p,.pbody p{color:var(--mute);font-size:.88rem}
 
-    /* Tab Content Toggle */
-    .tab-panel {
-        display: none;
-    }
-    .tab-panel.active {
-        display: block;
-    }
+/* Project & produk */
+.card.col{display:flex;flex-direction:column;overflow:hidden}
+.thumb{position:relative;aspect-ratio:16/10;background:linear-gradient(135deg,#1b160a,#050505);overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.card:hover .thumb img{transform:scale(1.05)}
+.thumb .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--gold)}
+.thumb .ph svg{width:56px;height:56px;opacity:.8}
+.tag{position:absolute;top:12px;right:12px;font-size:.72rem;font-weight:600;color:var(--gold-l);background:rgba(0,0,0,.8);border:1px solid var(--line);padding:4px 12px;border-radius:999px;backdrop-filter:blur(6px)}
+.pbody{padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:14px;flex:1}
+.pbody p{flex:1}
+.price{font-family:Cinzel,serif;font-weight:700;color:var(--gold-l);font-size:1.05rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:rgba(0,0,0,.4);border-radius:999px;padding:7px 14px;font-size:.78rem;cursor:pointer;color:var(--mute);transition:.2s}
+.chip.on{color:#1a1305;background:var(--gold);border-color:var(--gold);font-weight:700}
 
-    /* ================= CINEMATIC BLACK + GOLD MODE ================= */
-    html, body {
-        background: #020202 !important;
-        color: #f5f1e8;
-    }
+.banner{margin-top:clamp(24px,4vw,40px);padding:clamp(20px,4vw,40px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+.banner .l{display:flex;align-items:center;gap:18px;flex:1 1 320px}
+.banner .ico{margin:0;flex-shrink:0}
+.banner h3{font-size:1.25rem}
 
-    body {
-        min-height: 100vh;
-        overflow-x: hidden;
-        background:
-            radial-gradient(circle at 50% 18%, rgba(212,175,55,.075), transparent 32%),
-            #020202 !important;
-    }
+/* Forge */
+.forge{display:grid;gap:clamp(16px,2.5vw,28px);grid-template-columns:5fr 7fr}
+.forge .card{padding:clamp(20px,3.5vw,34px)}
+.steps{list-style:none;padding:20px 0 0;margin:20px 0 0;border-top:1px solid var(--line);display:grid;gap:14px;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:center;color:var(--mute);font-size:.86rem;counter-increment:s}
+.steps li::before{content:counter(s);width:26px;height:26px;flex-shrink:0;border-radius:50%;border:1px solid var(--line);background:rgba(212,175,55,.1);color:var(--gold);display:grid;place-items:center;font-size:.75rem;font-weight:700}
+form{display:grid;gap:18px}
+label{display:block;font-size:.78rem;color:var(--mute);margin-bottom:7px;font-weight:600}
+input,select,textarea{width:100%;background:rgba(0,0,0,.6);border:1px solid rgba(212,175,55,.18);border-radius:14px;padding:13px 16px;font-size:16px;transition:.2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12)}
+textarea{resize:vertical;min-height:110px}
+select option{background:#0a0a0a}
 
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-        background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.78));
-    }
+footer{position:relative;z-index:10;border-top:1px solid var(--line);background:rgba(0,0,0,.82);padding:34px max(var(--pad),env(safe-area-inset-left)) calc(34px + var(--bn) + env(safe-area-inset-bottom));font-size:.8rem;color:var(--mute)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px 30px;align-items:center;justify-content:space-between}
+footer strong{color:var(--gold)}
+footer nav{display:flex;gap:22px}
+footer nav a:hover{color:var(--gold)}
 
-    .nature-bg {
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        overflow: hidden;
-        pointer-events: none;
-        background: #000;
-    }
+.nav-m{display:none}
+#toast{position:fixed;left:50%;bottom:calc(24px + var(--bn) + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;z-index:100;background:#0d0b06;border:1px solid var(--gold);color:var(--gold-l);padding:12px 22px;border-radius:999px;font-size:.85rem;transition:.35s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
 
-    .nature-image {
-        position: absolute;
-        inset: -3%;
-        background-image: var(--nature-image);
-        background-size: cover;
-        background-position: center;
-        filter: saturate(.55) contrast(1.18) brightness(.32);
-        transform: scale(1.04);
-        animation: slowNature 24s ease-in-out infinite alternate;
-    }
-
-    .nature-vignette {
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(circle at 50% 35%, rgba(0,0,0,.05), rgba(0,0,0,.72) 70%),
-            linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.25) 42%, rgba(0,0,0,.88) 100%);
-    }
-
-    .nature-gold-haze {
-        position: absolute;
-        width: 65vw;
-        height: 30vw;
-        left: 50%;
-        top: 12%;
-        transform: translateX(-50%);
-        background: radial-gradient(ellipse, rgba(212,175,55,.11), transparent 68%);
-        filter: blur(45px);
-        animation: hazePulse 8s ease-in-out infinite;
-    }
-
-    .nature-noise {
-        position: absolute;
-        inset: 0;
-        opacity: .055;
-        background-image:
-            repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0 1px, transparent 1px 3px);
-        mix-blend-mode: overlay;
-    }
-
-    @keyframes slowNature {
-        from { transform: scale(1.04) translate3d(0,0,0); }
-        to { transform: scale(1.10) translate3d(-1.2%, -0.7%, 0); }
-    }
-
-    @keyframes hazePulse {
-        0%, 100% { opacity: .55; transform: translateX(-50%) scale(1); }
-        50% { opacity: .95; transform: translateX(-50%) scale(1.08); }
-    }
-
-    /* Force every existing light-mode surface into the black/gold visual language. */
-    .bg-white, .bg-slate-50, .bg-slate-100,
-    .light\:bg-white, .light\:bg-slate-50, .light\:bg-slate-100 {
-        background-color: rgba(5,5,5,.72) !important;
-    }
-
-    .bg-slate-900, .bg-slate-950 {
-        background-color: rgba(2,2,2,.82) !important;
-    }
-
-    .border-slate-200, .border-slate-300, .border-slate-800, .border-slate-900 {
-        border-color: rgba(212,175,55,.14) !important;
-    }
-
-    .text-slate-900, .text-slate-800, .text-slate-700 {
-        color: #f4f0e8 !important;
-    }
-
-    .text-slate-600, .text-slate-500 {
-        color: #a9a39a !important;
-    }
-
-    .gradient-brand-text {
-        background: linear-gradient(135deg, #fff7d6 0%, #e8c76a 48%, #a77a16 100%) !important;
-        -webkit-background-clip: text !important;
-        background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-    }
-
-    .text-glow {
-        text-shadow:
-            0 0 12px rgba(212,175,55,.18),
-            0 0 32px rgba(212,175,55,.12) !important;
-    }
-
-    header {
-        position: relative;
-        background: rgba(1,1,1,.78) !important;
-        border-color: rgba(212,175,55,.16) !important;
-        box-shadow: 0 8px 35px rgba(0,0,0,.35);
-    }
-
-    nav {
-        background: rgba(5,5,5,.72) !important;
-        border-color: rgba(212,175,55,.12) !important;
-    }
-
-    .card-hover-effect {
-        background: linear-gradient(145deg, rgba(13,13,13,.78), rgba(3,3,3,.72)) !important;
-        border-color: rgba(212,175,55,.13) !important;
-        box-shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
-
-    .card-hover-effect:hover {
-        box-shadow:
-            0 25px 70px rgba(0,0,0,.55),
-            0 0 35px rgba(212,175,55,.08) !important;
-        border-color: rgba(212,175,55,.38) !important;
-    }
-
-    .leaf-layer {
-        position: fixed;
-        inset: 0;
-        z-index: 80;
-        pointer-events: none;
-        overflow: hidden;
-    }
-
-    .falling-leaf {
-        position: absolute;
-        top: -8vh;
-        width: var(--size);
-        height: calc(var(--size) * .58);
-        background: linear-gradient(135deg, #9a7621, #d4af37 55%, #6d4e0b);
-        border-radius: 100% 0 100% 0;
-        opacity: max(0.32, var(--opacity));
-        filter: drop-shadow(0 0 5px rgba(212,175,55,.16));
-        transform: rotate(var(--rot));
-        animation:
-            leafFall var(--duration) linear var(--delay) infinite,
-            leafSway calc(var(--duration) * .55) ease-in-out var(--delay) infinite alternate;
-    }
-
-    .falling-leaf::after {
-        content: "";
-        position: absolute;
-        width: 70%;
-        height: 1px;
-        top: 50%;
-        left: 15%;
-        background: rgba(255,244,193,.38);
-        transform: rotate(-18deg);
-        transform-origin: left center;
-    }
-
-    @keyframes leafFall {
-        0% { transform: translate3d(0,-10vh,0) rotate(var(--rot)); }
-        100% { transform: translate3d(var(--drift),115vh,0) rotate(calc(var(--rot) + 540deg)); }
-    }
-
-    @keyframes leafSway {
-        0% { margin-left: -18px; }
-        100% { margin-left: 18px; }
-    }
-
-    .music-control.is-playing {
-        background: rgba(212,175,55,.13) !important;
-        border-color: rgba(212,175,55,.45) !important;
-        box-shadow: 0 0 24px rgba(212,175,55,.10);
-    }
-
-    footer {
-        background: rgba(0,0,0,.82) !important;
-        border-color: rgba(212,175,55,.12) !important;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .nature-image, .nature-gold-haze, .falling-leaf { animation: none !important; }
-    }
-
+/* Responsive */
+@media (max-width:900px){
+  :root{--hh:60px;--bn:64px}
+  .nav-d,.actions .discord{display:none}
+  .forge{grid-template-columns:1fr}
+  .nav-m{display:flex;position:fixed;inset:auto 0 0 0;z-index:55;height:calc(var(--bn) + env(safe-area-inset-bottom));padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background:rgba(3,3,3,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line)}
+  .nav-m .nav-btn{flex:1;flex-direction:column;gap:3px;border-radius:0;font-size:.66rem;padding:8px 2px;background:none;box-shadow:none}
+  .nav-m .nav-btn svg{width:21px;height:21px}
+  .nav-m .nav-btn.on{color:var(--gold-l);background:none;box-shadow:none}
+  .nav-m .nav-btn.on svg{filter:drop-shadow(0 0 8px rgba(212,175,55,.6))}
+  footer .wrap{justify-content:center;text-align:center}
+}
+@media (max-width:480px){
+  .brand-sub{display:none}
+  .brand img{width:40px;height:32px}
+  .cta .btn{flex:1 1 100%}
+}
+/* HP landscape / layar pendek */
+@media (max-height:520px) and (orientation:landscape){
+  :root{--hh:50px;--bn:50px}
+  .hero{display:grid;grid-template-columns:auto 1fr;gap:6px 28px;text-align:left;align-items:center}
+  .hero-logo{grid-row:1/4;width:200px;height:150px;margin:0}
+  .hero h1,.hero p{margin-left:0;max-width:none}
+  .hero h1{font-size:clamp(1.5rem,4.4vw,2.4rem)}
+  .hero p{margin-bottom:16px}
+  .cta{justify-content:flex-start}
+  .btn{padding:10px 20px}
+  .nav-m{height:calc(var(--bn) + env(safe-area-inset-bottom))}
+  .nav-m .nav-btn{flex-direction:row;justify-content:center;gap:6px;font-size:.72rem}
+  .sec-head{margin:12px auto 20px}
+}
+@media (min-width:1600px){.wrap{max-width:1360px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.leaf-layer{display:none}}
 </style>
+</head>
+<body>
 
+<div class="bg" aria-hidden="true"><div class="bg-img"></div><div class="bg-shade"></div></div>
+<div class="leaf-layer" id="leaves" aria-hidden="true"></div>
 
-<!-- AMBIENT BACKGROUND GLOW & GRID -->
-<div class="fixed inset-0 pointer-events-none z-0">
-    <div id="grid-bg" class="absolute inset-0 bg-grid-dark transition-opacity duration-500"></div>
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] dark:bg-amber-500/10 bg-blue-500/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/3 right-10 w-[500px] h-[300px] dark:bg-yellow-600/5 bg-royal-600/10 rounded-full blur-[100px]"></div>
-</div>
-
-<!-- NAVBAR HEADER -->
-<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-slate-950/80 bg-white/80 backdrop-blur-xl dark:border-amber-500/20 border-slate-200 border-b">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        
-        <!-- BRAND LOGO -->
-        <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3.5 group">
-            <img src="assets/13studio_logo_transparent.png" data-config-logo="true" alt="Thirteen Studio" class="w-14 h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_18px_rgba(212,175,55,0.22)]">
-            <div class="flex flex-col">
-                <span class="font-heading font-extrabold text-lg tracking-widest gradient-brand-text leading-none">THIRTEEN</span>
-                <span class="text-[10px] tracking-[0.35em] text-amber-400/80 font-bold uppercase mt-1">STUDIO</span>
-            </div>
-        </a>
-
-        <!-- NAV MENU BUTTONS -->
-        <nav class="hidden md:flex items-center gap-1.5 dark:bg-slate-900/80 bg-slate-100 p-1.5 rounded-2xl dark:border-slate-800 border-slate-200 border backdrop-blur-md">
-            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 shadow-sm">
-                Dashboard
-            </button>
-            <button onclick="switchTab('creations')" id="nav-creations" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200">
-                Creations
-            </button>
-            <button onclick="switchTab('products')" id="nav-products" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200">
-                Products & Assets
-            </button>
-            <button onclick="switchTab('commissions')" id="nav-commissions" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-1.5">
-                <i data-lucide="hammer" class="w-4 h-4 dark:text-amber-400 text-blue-600"></i> The Forge
-            </button>
-        </nav>
-
-        <!-- CONTROLS & DISCORD LINK -->
-        <div class="flex items-center gap-3">
-            <!-- AMBIENT MUSIC CONTROL -->
-            <button id="music-toggle" class="music-control p-2.5 rounded-xl bg-black/70 border border-amber-500/20 text-amber-400 hover:border-amber-400/50 hover:bg-amber-500/10 hover:scale-105 btn-active transition duration-300" title="Nyalakan musik">
-                <i data-lucide="volume-x" id="music-icon" class="w-5 h-5"></i>
-            </button>
-
-            <!-- DISCORD BUTTON -->
-            <a href="#" data-config-link="discord" target="_blank" class="hidden sm:inline-flex items-center gap-2 dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-300 shadow-lg dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active">
-                <i data-lucide="message-square" class="w-4 h-4"></i> Discord
-            </a>
-        </div>
-    </div>
+<header>
+  <a href="#" class="brand" data-tab="dashboard">
+    <img id="logo-h" alt="Thirteen Studio">
+    <div><div class="brand-name" id="b-name"></div><div class="brand-sub" id="b-studio"></div></div>
+  </a>
+  <nav class="nav-d" id="nav-d" aria-label="Menu utama"></nav>
+  <div class="actions">
+    <button id="music" class="icon-btn music" aria-label="Musik">
+      <span class="ic-on"><i data-lucide="volume-2"></i></span>
+      <span class="ic-off"><i data-lucide="volume-x"></i></span>
+    </button>
+    <a class="btn gold discord" data-link="discord" target="_blank" rel="noopener" style="padding:10px 20px"><i data-lucide="message-square"></i>Discord</a>
+  </div>
 </header>
+<nav class="nav-m" id="nav-m" aria-label="Menu utama"></nav>
 
-<!-- MAIN CONTENT CONTAINERS -->
-<main class="relative z-10 pt-28 pb-20 flex-grow">
+<main><div class="wrap">
 
-    <!-- ================= TAB 1: DASHBOARD ================= -->
-    <div id="tab-dashboard" class="tab-panel active max-w-7xl mx-auto px-6">
-        
-        <!-- HERO SECTION -->
-        <section class="py-16 md:py-24 text-center reveal">
-            <!-- MONUMENTAL TRANSPARENT LOGO -->
-            <div class="relative w-72 h-56 md:w-[30rem] md:h-72 mx-auto mb-8 flex items-center justify-center">
-                <div class="absolute inset-8 rounded-full bg-amber-500/10 blur-[70px] animate-pulse"></div>
-                <img src="assets/13studio_logo_transparent.png" data-config-logo="true"
-                     alt="13 Studio Monument Logo"
-                     class="relative z-10 w-full h-full object-contain drop-shadow-[0_0_35px_rgba(212,175,55,0.28)]">
-            </div>
-
-            <h1 class="font-heading text-4xl md:text-7xl font-extrabold tracking-tight max-w-5xl mx-auto leading-tight mb-6">
-                Crafting Mythic Environments & <span class="gradient-brand-text text-glow">Roblox Experiences</span>
-            </h1>
-            
-            <p class="dark:text-slate-400 text-slate-600 text-base md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-                Arsitek dunia virtual spesialis pembuatan terrain realistis, pencahayaan atmosferik, serta pembentukan aset 3D berkualitas tinggi untuk komunitas Roblox.
-            </p>
-
-            <div class="flex flex-wrap items-center justify-center gap-4">
-                <button onclick="switchTab('creations')" class="px-8 py-4 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition-all duration-300 shadow-xl dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active flex items-center gap-2">
-                    <i data-lucide="compass" class="w-5 h-5"></i> Jelajahi Map
-                </button>
-                <button onclick="switchTab('products')" class="px-8 py-4 rounded-xl dark:bg-slate-900/90 bg-white dark:border-slate-800 border-slate-300 border dark:text-slate-200 text-slate-800 font-bold text-sm transition-all duration-300 hover:scale-105 btn-active flex items-center gap-2 shadow-sm">
-                    <i data-lucide="box" class="w-5 h-5 dark:text-amber-400 text-blue-600"></i> Katalog Asset
-                </button>
-            </div>
-        </section>
-
-        <!-- STATS / HIGHLIGHT CARDS -->
-        <section class="py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
-                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
-                    <i data-lucide="mountain" class="w-7 h-7"></i>
-                </div>
-                <h3 class="font-heading text-xl font-bold mb-3">Immersive Terrain</h3>
-                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Pengolahan landscape pegunungan, alam liar, dan tebing realistis dengan optimasi performa tinggi.</p>
-            </div>
-
-            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
-                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
-                    <i data-lucide="layers" class="w-7 h-7"></i>
-                </div>
-                <h3 class="font-heading text-xl font-bold mb-3">PBR Assets & Models</h3>
-                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Aset arsitektur dan prop 3D berkualitas industri yang siap langsung diintegrasikan ke Roblox Studio.</p>
-            </div>
-
-            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
-                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
-                    <i data-lucide="hammer" class="w-7 h-7"></i>
-                </div>
-                <h3 class="font-heading text-xl font-bold mb-3">Custom Commission</h3>
-                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Layanan pemesanan pembuatan dunia kustom (The Forge) secara langsung melalui Discord ticket.</p>
-            </div>
-        </section>
+  <section id="tab-dashboard" class="tab on">
+    <div class="hero">
+      <div class="hero-logo"><img id="logo-hero" alt="Thirteen Studio"></div>
+      <h1><span id="h-title"></span> <em id="h-hl"></em></h1>
+      <p id="h-desc"></p>
+      <div class="cta" id="h-cta"></div>
     </div>
+    <div class="ticker" id="ticker" hidden><div class="ticker-track" id="ticker-track"></div></div>
+    <div class="grid g3" id="features" style="margin-top:clamp(28px,5vw,56px)"></div>
+  </section>
 
-    <!-- ================= TAB 2: CREATIONS ================= -->
-    <div id="tab-creations" class="tab-panel max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto my-12 reveal">
-            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
-                Official Projects
-            </span>
-            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">Featured Showcase</h2>
-            <p class="dark:text-slate-400 text-slate-600">Jelajahi karya dunia Roblox yang pernah kami rancang dan gabung komunitas resmi.</p>
-        </div>
+  <section id="tab-creations" class="tab">
+    <div class="sec-head" id="cr-head"></div>
+    <div class="grid g2" id="projects"></div>
+    <div class="card banner" id="community"></div>
+  </section>
 
-        <!-- MAP SHOWCASE GRID -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <!-- Map 1 -->
-            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/20 border-slate-200 border rounded-3xl overflow-hidden backdrop-blur-xl card-hover-effect flex flex-col justify-between">
-                <div>
-                    <div class="h-64 bg-slate-800 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Mount Niskala Expedition" class="w-full h-full object-cover">
-                        <span class="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md dark:text-amber-300 text-blue-400 border dark:border-amber-500/30 border-blue-500/30 px-3 py-1 rounded-xl text-xs font-semibold">
-                            Expedition / Wilderness
-                        </span>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="font-heading text-2xl font-bold mb-3">Mount Niskala Expedition</h3>
-                        <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed mb-6">
-                            Petualangan pendakian medan realistis dengan atmosfer guram, tebing terjal, dan sistem pencahayaan kabut alami.
-                        </p>
-                    </div>
-                </div>
-                <div class="px-8 pb-8">
-                    <a href="https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition" target="_blank" class="w-full py-3.5 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition flex items-center justify-center gap-2 btn-active shadow-lg">
-                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Play Experience
-                    </a>
-                </div>
-            </div>
+  <section id="tab-products" class="tab">
+    <div class="sec-head" id="pr-head"></div>
+    <div class="grid g3" id="products"></div>
+  </section>
 
-            <!-- Map 2 -->
-            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/20 border-slate-200 border rounded-3xl overflow-hidden backdrop-blur-xl card-hover-effect flex flex-col justify-between">
-                <div>
-                    <div class="h-64 bg-slate-800 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=80" alt="Santara" class="w-full h-full object-cover">
-                        <span class="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md dark:text-amber-300 text-blue-400 border dark:border-amber-500/30 border-blue-500/30 px-3 py-1 rounded-xl text-xs font-semibold">
-                            Nature / Landscape
-                        </span>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="font-heading text-2xl font-bold mb-3">Santara</h3>
-                        <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed mb-6">
-                            Eksplorasi keindahan eksotis alam fantasi terbuka dengan vegetasi rimbun, air terjun, dan pencahayaan dinamis.
-                        </p>
-                    </div>
-                </div>
-                <div class="px-8 pb-8">
-                    <a href="https://www.roblox.com/id/games/89877678091980/Santara" target="_blank" class="w-full py-3.5 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition flex items-center justify-center gap-2 btn-active shadow-lg">
-                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Play Experience
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- COMMUNITY BANNER -->
-        <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl shadow-xl">
-            <div class="flex items-center gap-6">
-                <div class="w-16 h-16 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 shrink-0">
-                    <i data-lucide="users" class="w-8 h-8"></i>
-                </div>
-                <div>
-                    <h3 class="font-heading text-2xl font-bold mb-2">Thirteen Studio Roblox Group</h3>
-                    <p class="dark:text-slate-400 text-slate-600 text-sm max-w-xl">Bergabunglah dalam grup komunitas Roblox resmi kami untuk info rilisan map terbaru dan perk eksklusif.</p>
-                </div>
-            </div>
-            <a href="#" data-config-link="robloxGroup" target="_blank" class="px-8 py-4 rounded-xl dark:bg-amber-500 bg-blue-600 dark:text-slate-950 text-white font-bold transition text-sm whitespace-nowrap btn-active shadow-lg">
-                Join Roblox Group
-            </a>
-        </div>
+  <section id="tab-commissions" class="tab">
+    <div class="sec-head" id="fg-head"></div>
+    <div class="forge">
+      <div class="card" style="display:flex;flex-direction:column;justify-content:space-between">
+        <div id="fg-info"></div>
+        <a class="btn block" data-link="discord" target="_blank" rel="noopener" style="margin-top:26px" id="fg-discord"></a>
+      </div>
+      <div class="card">
+        <form id="order-form">
+          <div><label for="f-user">Username Roblox / Discord</label><input id="f-user" required placeholder="misal: @username" autocomplete="off"></div>
+          <div><label for="f-type">Jenis layanan</label><select id="f-type"></select></div>
+          <div><label for="f-desc">Deskripsi proyek & ukuran map</label><textarea id="f-desc" required placeholder="Jelaskan tema, perkiraan ukuran map, dan referensi visual..."></textarea></div>
+          <button type="submit" class="btn gold block" id="f-submit"></button>
+        </form>
+      </div>
     </div>
+  </section>
 
-    <!-- ================= TAB 3: PRODUCTS / ASSETS ================= -->
-    <div id="tab-products" class="tab-panel max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto my-12 reveal">
-            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
-                Asset Store
-            </span>
-            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">Asset Catalog</h2>
-            <p class="dark:text-slate-400 text-slate-600">Aset Roblox Studio siap pakai untuk mempercepat pembuatan game Anda.</p>
-        </div>
+</div></main>
 
-        <!-- PRODUCT CARDS GRID -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Asset Item 1 -->
-            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="PBR Nature Pack" class="w-full h-full object-cover">
-                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 450 / IDR 50k</span>
-                    </div>
-                    <h3 class="font-heading text-xl font-bold mb-2">PBR Rock & Mountain Pack</h3>
-                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Paket aset batu 3D bermaterial PBR tekstur 2K tinggi detail, siap pakai untuk terrain Roblox.</p>
-                </div>
-                <button onclick="orderAsset('PBR Rock & Mountain Pack')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
-                </button>
-            </div>
-
-            <!-- Asset Item 2 -->
-            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Custom Terrain Pack" class="w-full h-full object-cover">
-                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 800 / IDR 90k</span>
-                    </div>
-                    <h3 class="font-heading text-xl font-bold mb-2">Custom Terrain & Island Map</h3>
-                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Templat map pulau dan tebing siap pakai lengkap dengan water, atmosphere, dan lighting preset.</p>
-                </div>
-                <button onclick="orderAsset('Custom Terrain & Island Map')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
-                </button>
-            </div>
-
-            <!-- Asset Item 3 -->
-            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
-                <div>
-                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" alt="Atmosphere Lighting Preset" class="w-full h-full object-cover">
-                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 300 / IDR 35k</span>
-                    </div>
-                    <h3 class="font-heading text-xl font-bold mb-2">Mythic Atmosphere & Lighting</h3>
-                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Kumpulan preset Lighting, Skybox, SunRays, dan Atmosphere mistis untuk visual dramatis.</p>
-                </div>
-                <button onclick="orderAsset('Mythic Atmosphere & Lighting')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ================= TAB 4: COMMISSIONS (THE FORGE) ================= -->
-    <div id="tab-commissions" class="tab-panel max-w-5xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto my-12 reveal">
-            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
-                Custom Order
-            </span>
-            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">The Forge</h2>
-            <p class="dark:text-slate-400 text-slate-600">Pahat dunia Roblox impian Anda secara khusus bersama arsitek Thirteen Studio.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 reveal">
-            <div class="md:col-span-5 dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-between shadow-xl">
-                <div>
-                    <div class="w-12 h-12 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
-                        <i data-lucide="hammer" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-heading text-xl font-bold mb-4">Alur Pemesanan Custom</h3>
-                    <p class="dark:text-slate-300 text-slate-600 text-xs leading-relaxed mb-6">
-                        Kami melayani pembuatan terrain kustom, environment design, dan pemodelan map dari awal sesuai narasi proyek game Anda.
-                    </p>
-                    <ul class="space-y-4 text-xs dark:text-slate-400 text-slate-600 border-t dark:border-slate-800 border-slate-200 pt-6">
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">1</span>
-                            Isi form draf deskripsi proyek Anda
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">2</span>
-                            Klik tombol untuk mengopi format pesan
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">3</span>
-                            Kirimkan ke Ticket Discord Thirteen Studio
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="#" data-config-link="discord" target="_blank" class="mt-8 py-3.5 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-slate-700 hover:bg-slate-200 dark:text-slate-200 text-slate-800 font-semibold text-xs transition flex items-center justify-center gap-2 border dark:border-slate-700 border-slate-300 btn-active">
-                    <i data-lucide="message-square" class="w-4 h-4"></i> Masuk Server Discord
-                </a>
-            </div>
-
-            <!-- FORM -->
-            <div class="md:col-span-7 dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl shadow-xl">
-                <form onsubmit="handleCustomOrder(event)" class="space-y-5">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Username Roblox / Discord</label>
-                        <input type="text" id="custom-user" required placeholder="misal: @username" class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Jenis Layanan Custom</label>
-                        <select id="custom-type" class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition">
-                            <option value="Custom Mountain & Terrain Sculpting">Custom Mountain & Terrain Sculpting</option>
-                            <option value="Full World Environment Design">Full World Environment Design</option>
-                            <option value="PBR Asset Modeling">PBR Asset Modeling & Props</option>
-                            <option value="Lighting & Polish Optimization">Lighting & Polish Optimization</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Deskripsi Proyek & Ukuran Map</label>
-                        <textarea id="custom-desc" rows="4" required placeholder="Jelaskan tema, estimasi ukuran map, serta referensi visual yang diinginkan..." class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition"></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full py-4 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold transition duration-300 shadow-xl flex items-center justify-center gap-2 btn-active">
-                        <i data-lucide="send" class="w-4 h-4"></i> Salin Format & Buka Discord
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-</main>
-
-<!-- CREDITS & FOOTER SECTION -->
-<footer class="relative z-10 dark:bg-slate-950 bg-white dark:border-slate-900 border-slate-200 border-t py-12">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
-        
-        <div class="flex items-center gap-3">
-            <span class="font-heading font-black text-sm dark:text-amber-400 text-blue-600">THIRTEEN STUDIO</span>
-            <span>— Roblox World Building & Assets</span>
-        </div>
-
-        <!-- CREDITS MENTION -->
-        <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-4 py-2 rounded-xl dark:border-slate-800 border-slate-200 border">
-            <i data-lucide="code" class="w-4 h-4 dark:text-amber-400 text-blue-600"></i>
-            <span>Created & Designed by <strong class="dark:text-amber-400 text-blue-600 font-bold">@dzuullllll</strong></span>
-        </div>
-
-        <div class="flex items-center gap-6">
-            <a href="#" data-config-link="discord" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Discord Server</a>
-            <a href="#" data-config-link="robloxGroup" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Roblox Group</a>
-        </div>
-    </div>
-</footer>
-
-<!-- INTERACTIVE JAVASCRIPT -->
-<script>
-
-    // Apply centralized SITE_CONFIG values to links/text.
-    document.querySelectorAll('[data-config-link="discord"]').forEach(el => {
-        el.href = SITE_CONFIG.links.discord;
-    });
-
-    document.querySelectorAll('[data-config-link="robloxGroup"]').forEach(el => {
-        el.href = SITE_CONFIG.links.robloxGroup;
-    });
-
-    const musicControl = document.getElementById('music-toggle');
-    if (!SITE_CONFIG.music.enabled && musicControl) {
-        musicControl.style.display = 'none';
-    }
-
-    if (!SITE_CONFIG.leaves.enabled && leafLayer) {
-        leafLayer.style.display = 'none';
-    }
-
-    // Init Lucide Icons
-    lucide.createIcons();// Tab Navigation Switcher
-    function switchTab(tabName) {
-        document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('dark:text-amber-400', 'text-blue-600', 'dark:bg-amber-500/10', 'bg-blue-500/10', 'shadow-sm');
-            btn.classList.add('dark:text-slate-400', 'text-slate-600');
-        });
-
-        document.getElementById(`tab-${tabName}`).classList.add('active');
-        
-        const activeNav = document.getElementById(`nav-${tabName}`);
-        if (activeNav) {
-            activeNav.classList.remove('dark:text-slate-400', 'text-slate-600');
-            activeNav.classList.add('dark:text-amber-400', 'text-blue-600', 'dark:bg-amber-500/10', 'bg-blue-500/10', 'shadow-sm');
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        triggerScrollReveal();
-    }
-
-    // Custom Order Generator
-    function handleCustomOrder(e) {
-        e.preventDefault();
-        const user = document.getElementById('custom-user').value;
-        const type = document.getElementById('custom-type').value;
-        const desc = document.getElementById('custom-desc').value;
-
-        const format = `=== THIRTEEN STUDIO COMMISSION ORDER ===\nClient: ${user}\nLayanan: ${type}\nDetail Proyek: ${desc}\n====================================`;
-        
-        navigator.clipboard.writeText(format).then(() => {
-            alert('Format Pemesanan Custom telah disalin! Anda akan diarahkan ke Discord Thirteen Studio.');
-            window.open('https://discord.gg/a2hbrNnF6v', '_blank');
-        });
-    }
-
-    // Direct Asset Purchase via Discord
-    function orderAsset(assetName) {
-        const format = `=== THIRTEEN STUDIO ASSET PURCHASE ===\nAsset Name: ${assetName}\n====================================`;
-        navigator.clipboard.writeText(format).then(() => {
-            alert(`Format pembelian "${assetName}" telah disalin! Silakan kirimkan di Discord kami.`);
-            window.open('https://discord.gg/a2hbrNnF6v', '_blank');
-        });
-    }
-
-    // Scroll Reveal Observer
-    function triggerScrollReveal() {
-        const reveals = document.querySelectorAll('.reveal');
-        reveals.forEach(el => {
-            const windowHeight = window.innerHeight;
-            const elementTop = el.getBoundingClientRect().top;
-            if (elementTop < windowHeight - 50) {
-                el.classList.add('active');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', triggerScrollReveal);
-    window.addEventListener('load', triggerScrollReveal);
-</script>
+<footer><div class="wrap">
+  <div><strong id="ft-name"></strong> — <span id="ft-tag"></span></div>
+  <div>Dibuat oleh <strong id="ft-by"></strong></div>
+  <nav><a data-link="discord" target="_blank" rel="noopener">Discord</a><a data-link="robloxGroup" target="_blank" rel="noopener">Roblox Group</a></nav>
+</div></footer>
+<div id="toast" role="status"></div>
 
 <script>
-    // ================= FALLING LEAVES =================
-    const leafLayer = document.getElementById('leaf-layer');
-    const leafConfig = SITE_CONFIG.leaves;
-    const leafCount = window.innerWidth < 700
-        ? leafConfig.mobileCount
-        : leafConfig.desktopCount;
+const C = SITE_CONFIG;
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fill = (t, o) => t.replace(/\{(\w+)\}/g, (_, k) => o[k] ?? '');
+const ico = n => `<i data-lucide="${esc(n)}"></i>`;
 
-    for (let i = 0; i < leafCount; i++) {
-        const leaf = document.createElement('span');
-        leaf.className = 'falling-leaf';
-        leaf.style.left = `${Math.random() * 100}%`;
-        leaf.style.setProperty(
-            '--size',
-            `${leafConfig.minSize + Math.random() * (leafConfig.maxSize - leafConfig.minSize)}px`
-        );
-        leaf.style.setProperty('--opacity', `${0.18 + Math.random() * 0.36}`);
-        leaf.style.setProperty(
-            '--duration',
-            `${leafConfig.minDuration + Math.random() * (leafConfig.maxDuration - leafConfig.minDuration)}s`
-        );
-        leaf.style.setProperty('--delay', `${-Math.random() * 18}s`);
-        leaf.style.setProperty('--drift', `${-90 + Math.random() * 180}px`);
-        leaf.style.setProperty('--rot', `${Math.random() * 360}deg`);
-        leafLayer.appendChild(leaf);
-    }
+/* ---------- Dasar ---------- */
+document.title = C.brand.pageTitle;
+document.documentElement.style.setProperty('--nature', `url("${C.background.natureImage}")`);
+$('#b-name').textContent = C.brand.name;
+$('#b-studio').textContent = C.brand.studio;
+['#logo-h', '#logo-hero'].forEach(s => $(s).src = C.brand.logo);
+document.querySelectorAll('[data-link]').forEach(a => a.href = C.links[a.dataset.link]);
 
-    // ================= NATURE MUSIC FILE =================
-    const musicButton = document.getElementById('music-toggle');
-    const musicIcon = document.getElementById('music-icon');
+/* ---------- Navigasi ---------- */
+const navHTML = C.nav.map(n => `<button class="nav-btn" data-tab="${n.id}" aria-label="${esc(n.label)}">${ico(n.icon)}<span>${esc(n.label)}</span></button>`).join('');
+$('#nav-d').innerHTML = navHTML;
+$('#nav-m').innerHTML = navHTML;
 
-    const natureAudio = new Audio(SITE_CONFIG.music.file);
-    natureAudio.loop = true;
-    natureAudio.preload = 'auto';
-    natureAudio.volume = SITE_CONFIG.music.volume;
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.id === 'tab-' + id));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('on', b.dataset.tab === id));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-tab]');
+  if (t) { e.preventDefault(); switchTab(t.dataset.tab); }
+});
 
-    let musicPlaying = false;
+/* ---------- Hero ---------- */
+$('#h-title').textContent = C.hero.title;
+$('#h-hl').textContent = C.hero.highlight;
+$('#h-desc').textContent = C.hero.description;
+const b1 = C.hero.primaryButton, b2 = C.hero.secondaryButton;
+$('#h-cta').innerHTML =
+  `<button class="btn gold" data-tab="${b1.tab}">${ico(b1.icon)}${esc(b1.label)}</button>` +
+  `<button class="btn" data-tab="${b2.tab}">${ico(b2.icon)}${esc(b2.label)}</button>`;
 
-    function setMusicIcon(playing) {
-        musicIcon.setAttribute('data-lucide', playing ? 'volume-2' : 'volume-x');
-        lucide.createIcons();
-        musicButton.classList.toggle('is-playing', playing);
-        musicButton.title = playing ? 'Mute musik alam' : 'Nyalakan musik alam';
-    }
+/* ---------- Running text ---------- */
+if (C.ticker.enabled && C.ticker.items.length) {
+  const row = C.ticker.items.map(t => `<span>${esc(t)}</span>`).join('');
+  const track = $('#ticker-track');
+  track.innerHTML = row;
+  // ulangi sampai lebih lebar dari layar, lalu gandakan untuk loop mulus
+  while (track.scrollWidth < window.innerWidth * 1.2) track.innerHTML += row;
+  track.innerHTML += track.innerHTML;
+  $('#ticker').hidden = false;
+  const setSpeed = () => track.style.setProperty('--dur', (track.scrollWidth / 2 / C.ticker.speed) + 's');
+  setSpeed();
+}
 
-    async function toggleMusic() {
-        if (!SITE_CONFIG.music.enabled) return;
+/* ---------- Fitur ---------- */
+$('#features').innerHTML = C.features.map(f =>
+  `<div class="card feat lift"><div class="ico">${ico(f.icon)}</div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div>`).join('');
 
-        if (natureAudio.paused) {
-            try {
-                await natureAudio.play();
-                musicPlaying = true;
-                setMusicIcon(true);
-            } catch (err) {
-                console.warn('Music playback was blocked:', err);
-            }
-        } else {
-            natureAudio.pause();
-            musicPlaying = false;
-            setMusicIcon(false);
-        }
-    }
+/* ---------- Header section ---------- */
+const head = (b, s) => `<span class="badge">${esc(b.badge)}</span><h2>${esc(b.title)}</h2><p>${esc(b.subtitle)}</p>`;
+$('#cr-head').innerHTML = head(C.creations);
+$('#pr-head').innerHTML = head(C.products);
+$('#fg-head').innerHTML = head(C.forge);
 
-    musicButton.addEventListener('click', toggleMusic);
-    setMusicIcon(false);
+/* ---------- Creations ---------- */
+$('#projects').innerHTML = C.projects.map(p => `
+  <article class="card col lift">
+    <div class="thumb"><img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()"><span class="tag">${esc(p.category)}</span></div>
+    <div class="pbody"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>
+      <a class="btn gold block" href="${esc(p.link)}" target="_blank" rel="noopener">${ico('play')}${esc(C.creations.playLabel)}</a></div>
+  </article>`).join('');
+const cm = C.creations.community;
+$('#community').innerHTML = `<div class="l"><div class="ico">${ico('users')}</div><div><h3>${esc(cm.title)}</h3><p class="muted" style="font-size:.88rem">${esc(cm.text)}</p></div></div>
+  <a class="btn gold" data-link="robloxGroup" href="${esc(C.links.robloxGroup)}" target="_blank" rel="noopener">${esc(cm.button)}</a>`;
 
-    // Keep the site's visual state permanently in dark mode.
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
+/* ---------- Produk ---------- */
+$('#products').innerHTML = C.products.items.map((p, i) => {
+  const opts = p.options?.length;
+  const media = p.image
+    ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">`
+    : '';
+  const ph = `<div class="ph">${ico(p.icon || 'box')}</div>`;
+  const tag = p.badge ? `<span class="tag">${esc(p.badge)}</span>` : '';
+  const chips = opts ? `<div class="chips">${p.options.map((o, j) => `<button type="button" class="chip${j ? '' : ' on'}" data-opt="${j}">${esc(o.label)}</button>`).join('')}</div>` : '';
+  const price = opts ? p.options[0].price : p.price;
+  return `<article class="card col lift" data-i="${i}">
+    <div class="thumb">${ph}${media}${tag}</div>
+    <div class="pbody"><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>${chips}
+      <div class="price">${esc(price || '')}</div>
+      <button class="btn ${p.askStock ? 'gold' : ''} block" data-order>${ico(p.askStock ? 'message-circle-question' : 'shopping-cart')}${esc(p.buttonLabel || 'Beli via Discord')}</button></div>
+  </article>`;
+}).join('');
 
+$('#products').addEventListener('click', e => {
+  const card = e.target.closest('.card'); if (!card) return;
+  const p = C.products.items[card.dataset.i];
+  const chip = e.target.closest('.chip');
+  if (chip) {
+    card.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === chip));
+    $('.price', card).textContent = p.options[chip.dataset.opt].price;
+    return;
+  }
+  if (e.target.closest('[data-order]')) {
+    const on = card.querySelector('.chip.on');
+    const o = p.options ? p.options[on ? on.dataset.opt : 0] : {};
+    const msg = fill(p.askStock ? C.messages.askStock : C.messages.buy,
+      { item: p.title, label: o.label || '', price: o.price || p.price || '' });
+    sendToDiscord(msg);
+  }
+});
 
+/* ---------- The Forge ---------- */
+const f = C.forge;
+$('#fg-info').innerHTML = `<div class="ico">${ico('hammer')}</div><h3 style="font-size:1.25rem;margin-bottom:10px">${esc(f.boxTitle)}</h3>
+  <p class="muted" style="font-size:.88rem">${esc(f.boxText)}</p><ol class="steps">${f.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`;
+$('#fg-discord').innerHTML = ico('message-square') + esc(f.discordButton);
+$('#f-submit').innerHTML = ico('send') + esc(f.submitLabel);
+$('#f-type').innerHTML = f.services.map(s => `<option>${esc(s)}</option>`).join('');
+$('#order-form').addEventListener('submit', e => {
+  e.preventDefault();
+  sendToDiscord(fill(C.messages.commission, { user: $('#f-user').value, service: $('#f-type').value, detail: $('#f-desc').value }));
+});
 
-    // ================= PROJECT CONFIG BINDING =================
-    function applyProjectConfig() {
-        const projects = SITE_CONFIG.projects || [];
-        const cards = document.querySelectorAll('#tab-creations .grid > div');
+/* ---------- Footer ---------- */
+$('#ft-name').textContent = C.footer.copyright;
+$('#ft-tag').textContent = C.footer.tagline;
+$('#ft-by').textContent = C.footer.creator;
 
-        cards.forEach((card, index) => {
-            const project = projects[index];
-            if (!project) return;
+/* ---------- Util: salin + buka Discord ---------- */
+function toast(t) {
+  const el = $('#toast'); el.textContent = t; el.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('show'), 2600);
+}
+async function sendToDiscord(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const a = document.createElement('textarea'); a.value = text; document.body.append(a); a.select(); try { document.execCommand('copy'); } catch {} a.remove(); }
+  toast(C.messages.copied);
+  setTimeout(() => window.open(C.links.discord, '_blank', 'noopener'), 900);
+}
 
-            const img = card.querySelector('img');
-            const title = card.querySelector('h3');
-            const desc = card.querySelector('p');
-            const badge = card.querySelector('span');
-            const link = card.querySelector('a');
+/* ---------- Daun jatuh ---------- */
+const L = C.leaves, layer = $('#leaves');
+if (L.enabled) {
+  const n = window.innerWidth < 700 ? L.mobileCount : L.desktopCount;
+  const r = (a, b) => a + Math.random() * (b - a);
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('span'); s.className = 'leaf';
+    s.style.left = r(0, 100) + '%';
+    s.style.cssText += `;--s:${r(L.minSize, L.maxSize)}px;--o:${r(.3, .6)};--d:${r(L.minDuration, L.maxDuration)}s;--dl:${-r(0, 18)}s;--dr:${r(-90, 90)}px;--r:${r(0, 360)}deg`;
+    layer.append(s);
+  }
+}
 
-            if (img) {
-                img.src = project.image;
-                img.alt = project.title;
-            }
-            if (title) title.textContent = project.title;
-            if (desc) desc.textContent = project.description;
-            if (badge) badge.textContent = project.category;
-            if (link) link.href = project.link;
-        });
-    }
+/* ---------- Musik ---------- */
+const mBtn = $('#music'), M = C.music;
+if (!M.enabled) mBtn.hidden = true;
+else {
+  const audio = new Audio(M.file);
+  audio.loop = true; audio.volume = M.volume; audio.preload = 'auto';
+  const ui = on => {
+    mBtn.classList.toggle('playing', on);
+    mBtn.title = on ? M.playTitle : M.muteTitle;
+    mBtn.setAttribute('aria-label', mBtn.title);
+    mBtn.setAttribute('aria-pressed', on);
+  };
+  const start = () => audio.play().then(() => { ui(true); return true; }).catch(() => false);
+  mBtn.addEventListener('click', () => audio.paused ? start() : (audio.pause(), ui(false)));
+  ui(false);
 
-    applyProjectConfig();
-
-
-    document.querySelectorAll('[data-config-logo="true"]').forEach(img => {
-        img.src = SITE_CONFIG.brand.logo;
+  if (M.autoplay) {
+    // 1) coba langsung; 2) kalau diblokir browser, mulai di interaksi pertama
+    start().then(ok => {
+      if (ok) return;
+      const evs = ['pointerdown', 'touchstart', 'keydown', 'wheel'];
+      const once = e => {
+        if (e.target.closest && e.target.closest('#music')) return cleanup();
+        start().then(ok => ok && cleanup());
+      };
+      const cleanup = () => evs.forEach(v => window.removeEventListener(v, once, true));
+      evs.forEach(v => window.addEventListener(v, once, { capture: true, passive: true }));
     });
+  }
+}
 
+/* ---------- Init ---------- */
+switchTab('dashboard');
+window.scrollTo(0, 0);
+lucide.createIcons();
 </script>
+</body>
+</html>
