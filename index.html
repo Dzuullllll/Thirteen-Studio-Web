@@ -1,10 +1,123 @@
+
+<!-- CINEMATIC NATURE BACKGROUND -->
+<div class="nature-bg" aria-hidden="true">
+    <div class="nature-image"></div>
+    <div class="nature-vignette"></div>
+    <div class="nature-gold-haze"></div>
+    <div class="nature-noise"></div>
+</div>
+
+<!-- FALLING LEAVES OVERLAY -->
+<div id="leaf-layer" class="leaf-layer" aria-hidden="true"></div>
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com">
+    // ================= FALLING LEAVES =================
+    const leafLayer = document.getElementById('leaf-layer');
+    const leafCount = window.innerWidth < 700 ? 18 : 34;
+
+    for (let i = 0; i < leafCount; i++) {
+        const leaf = document.createElement('span');
+        leaf.className = 'falling-leaf';
+        leaf.style.left = `${Math.random() * 100}%`;
+        leaf.style.setProperty('--size', `${7 + Math.random() * 11}px`);
+        leaf.style.setProperty('--opacity', `${0.18 + Math.random() * 0.36}`);
+        leaf.style.setProperty('--duration', `${10 + Math.random() * 13}s`);
+        leaf.style.setProperty('--delay', `${-Math.random() * 18}s`);
+        leaf.style.setProperty('--drift', `${-90 + Math.random() * 180}px`);
+        leaf.style.setProperty('--rot', `${Math.random() * 360}deg`);
+        leafLayer.appendChild(leaf);
+    }
+
+    // ================= PROCEDURAL AMBIENT MUSIC =================
+    let audioCtx = null;
+    let masterGain = null;
+    let ambientStarted = false;
+    let musicMuted = true;
+    let musicTimer = null;
+
+    const musicButton = document.getElementById('music-toggle');
+    const musicIcon = document.getElementById('music-icon');
+
+    function createAmbientMusic() {
+        if (ambientStarted) return;
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.0001;
+        masterGain.connect(audioCtx.destination);
+
+        // Soft low drone + high shimmer. No external audio file is needed.
+        const drone = audioCtx.createOscillator();
+        const droneGain = audioCtx.createGain();
+        drone.type = 'sine';
+        drone.frequency.value = 110;
+        droneGain.gain.value = 0.045;
+        drone.connect(droneGain).connect(masterGain);
+        drone.start();
+
+        const fifth = audioCtx.createOscillator();
+        const fifthGain = audioCtx.createGain();
+        fifth.type = 'triangle';
+        fifth.frequency.value = 164.81;
+        fifthGain.gain.value = 0.018;
+        fifth.connect(fifthGain).connect(masterGain);
+        fifth.start();
+
+        const shimmer = audioCtx.createOscillator();
+        const shimmerGain = audioCtx.createGain();
+        shimmer.type = 'sine';
+        shimmer.frequency.value = 329.63;
+        shimmerGain.gain.value = 0.008;
+        shimmer.connect(shimmerGain).connect(masterGain);
+        shimmer.start();
+
+        // Very slow breathing volume.
+        const now = audioCtx.currentTime;
+        masterGain.gain.setValueAtTime(0.0001, now);
+        masterGain.gain.exponentialRampToValueAtTime(0.075, now + 2.2);
+
+        ambientStarted = true;
+        musicMuted = false;
+        musicButton.classList.add('is-playing');
+        musicIcon.setAttribute('data-lucide', 'volume-2');
+        lucide.createIcons();
+    }
+
+    function toggleMusic() {
+        if (!ambientStarted) {
+            createAmbientMusic();
+            return;
+        }
+
+        if (musicMuted) {
+            audioCtx.resume();
+            masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+            masterGain.gain.exponentialRampToValueAtTime(0.075, audioCtx.currentTime + 1.2);
+            musicMuted = false;
+            musicButton.classList.add('is-playing');
+            musicIcon.setAttribute('data-lucide', 'volume-2');
+        } else {
+            masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+            masterGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.8);
+            musicMuted = true;
+            musicButton.classList.remove('is-playing');
+            musicIcon.setAttribute('data-lucide', 'volume-x');
+        }
+        lucide.createIcons();
+    }
+
+    musicButton.addEventListener('click', toggleMusic);
+
+    // Keep the site's visual state permanently in dark mode.
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+
+</script>
 <script>
     tailwind.config = {
         darkMode: 'class',
@@ -115,6 +228,209 @@
     .tab-panel.active {
         display: block;
     }
+
+    /* ================= CINEMATIC BLACK + GOLD MODE ================= */
+    html, body {
+        background: #020202 !important;
+        color: #f5f1e8;
+    }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 50% 18%, rgba(212,175,55,.075), transparent 32%),
+            #020202 !important;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.78));
+    }
+
+    .nature-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+        background: #000;
+    }
+
+    .nature-image {
+        position: absolute;
+        inset: -3%;
+        background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=85');
+        background-size: cover;
+        background-position: center;
+        filter: saturate(.55) contrast(1.18) brightness(.32);
+        transform: scale(1.04);
+        animation: slowNature 24s ease-in-out infinite alternate;
+    }
+
+    .nature-vignette {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 50% 35%, rgba(0,0,0,.05), rgba(0,0,0,.72) 70%),
+            linear-gradient(180deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.25) 42%, rgba(0,0,0,.88) 100%);
+    }
+
+    .nature-gold-haze {
+        position: absolute;
+        width: 65vw;
+        height: 30vw;
+        left: 50%;
+        top: 12%;
+        transform: translateX(-50%);
+        background: radial-gradient(ellipse, rgba(212,175,55,.11), transparent 68%);
+        filter: blur(45px);
+        animation: hazePulse 8s ease-in-out infinite;
+    }
+
+    .nature-noise {
+        position: absolute;
+        inset: 0;
+        opacity: .055;
+        background-image:
+            repeating-linear-gradient(0deg, rgba(255,255,255,.7) 0 1px, transparent 1px 3px);
+        mix-blend-mode: overlay;
+    }
+
+    @keyframes slowNature {
+        from { transform: scale(1.04) translate3d(0,0,0); }
+        to { transform: scale(1.10) translate3d(-1.2%, -0.7%, 0); }
+    }
+
+    @keyframes hazePulse {
+        0%, 100% { opacity: .55; transform: translateX(-50%) scale(1); }
+        50% { opacity: .95; transform: translateX(-50%) scale(1.08); }
+    }
+
+    /* Force every existing light-mode surface into the black/gold visual language. */
+    .bg-white, .bg-slate-50, .bg-slate-100,
+    .light\:bg-white, .light\:bg-slate-50, .light\:bg-slate-100 {
+        background-color: rgba(5,5,5,.72) !important;
+    }
+
+    .bg-slate-900, .bg-slate-950 {
+        background-color: rgba(2,2,2,.82) !important;
+    }
+
+    .border-slate-200, .border-slate-300, .border-slate-800, .border-slate-900 {
+        border-color: rgba(212,175,55,.14) !important;
+    }
+
+    .text-slate-900, .text-slate-800, .text-slate-700 {
+        color: #f4f0e8 !important;
+    }
+
+    .text-slate-600, .text-slate-500 {
+        color: #a9a39a !important;
+    }
+
+    .gradient-brand-text {
+        background: linear-gradient(135deg, #fff7d6 0%, #e8c76a 48%, #a77a16 100%) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    .text-glow {
+        text-shadow:
+            0 0 12px rgba(212,175,55,.18),
+            0 0 32px rgba(212,175,55,.12) !important;
+    }
+
+    header {
+        position: relative;
+        background: rgba(1,1,1,.78) !important;
+        border-color: rgba(212,175,55,.16) !important;
+        box-shadow: 0 8px 35px rgba(0,0,0,.35);
+    }
+
+    nav {
+        background: rgba(5,5,5,.72) !important;
+        border-color: rgba(212,175,55,.12) !important;
+    }
+
+    .card-hover-effect {
+        background: linear-gradient(145deg, rgba(13,13,13,.78), rgba(3,3,3,.72)) !important;
+        border-color: rgba(212,175,55,.13) !important;
+        box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+
+    .card-hover-effect:hover {
+        box-shadow:
+            0 25px 70px rgba(0,0,0,.55),
+            0 0 35px rgba(212,175,55,.08) !important;
+        border-color: rgba(212,175,55,.38) !important;
+    }
+
+    .leaf-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .falling-leaf {
+        position: absolute;
+        top: -8vh;
+        width: var(--size);
+        height: calc(var(--size) * .58);
+        background: linear-gradient(135deg, #9a7621, #d4af37 55%, #6d4e0b);
+        border-radius: 100% 0 100% 0;
+        opacity: var(--opacity);
+        filter: drop-shadow(0 0 5px rgba(212,175,55,.16));
+        transform: rotate(var(--rot));
+        animation:
+            leafFall var(--duration) linear var(--delay) infinite,
+            leafSway calc(var(--duration) * .55) ease-in-out var(--delay) infinite alternate;
+    }
+
+    .falling-leaf::after {
+        content: "";
+        position: absolute;
+        width: 70%;
+        height: 1px;
+        top: 50%;
+        left: 15%;
+        background: rgba(255,244,193,.38);
+        transform: rotate(-18deg);
+        transform-origin: left center;
+    }
+
+    @keyframes leafFall {
+        0% { transform: translate3d(0,-10vh,0) rotate(var(--rot)); }
+        100% { transform: translate3d(var(--drift),115vh,0) rotate(calc(var(--rot) + 540deg)); }
+    }
+
+    @keyframes leafSway {
+        0% { margin-left: -18px; }
+        100% { margin-left: 18px; }
+    }
+
+    .music-control.is-playing {
+        background: rgba(212,175,55,.13) !important;
+        border-color: rgba(212,175,55,.45) !important;
+        box-shadow: 0 0 24px rgba(212,175,55,.10);
+    }
+
+    footer {
+        background: rgba(0,0,0,.82) !important;
+        border-color: rgba(212,175,55,.12) !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nature-image, .nature-gold-haze, .falling-leaf { animation: none !important; }
+    }
+
 </style>
 
 
@@ -131,12 +447,10 @@
         
         <!-- BRAND LOGO -->
         <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3.5 group">
-            <div class="w-11 h-11 rounded-2xl dark:bg-gradient-to-br dark:from-amber-500/20 dark:to-amber-900/40 dark:border-amber-500/40 bg-gradient-to-br from-blue-500/20 to-blue-700/30 border-blue-500/40 border flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
-                <span class="font-heading font-black dark:text-amber-400 text-blue-600 text-xl tracking-tighter">13</span>
-            </div>
+            <img src="assets/13studio_logo_transparent.png" alt="Thirteen Studio" class="w-14 h-11 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_18px_rgba(212,175,55,0.22)]">
             <div class="flex flex-col">
                 <span class="font-heading font-extrabold text-lg tracking-widest gradient-brand-text leading-none">THIRTEEN</span>
-                <span class="text-[10px] tracking-[0.35em] dark:text-amber-400/80 text-blue-600 font-bold uppercase mt-1">STUDIO</span>
+                <span class="text-[10px] tracking-[0.35em] text-amber-400/80 font-bold uppercase mt-1">STUDIO</span>
             </div>
         </a>
 
@@ -158,10 +472,9 @@
 
         <!-- CONTROLS & DISCORD LINK -->
         <div class="flex items-center gap-3">
-            <!-- DARK / LIGHT MODE SWITCHER -->
-            <button id="theme-toggle" class="p-2.5 rounded-xl dark:bg-slate-900 bg-slate-100 dark:border-slate-800 border-slate-200 border dark:text-amber-400 text-blue-600 hover:scale-105 btn-active transition duration-300" title="Ubah Tema">
-                <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
-                <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
+            <!-- AMBIENT MUSIC CONTROL -->
+            <button id="music-toggle" class="music-control p-2.5 rounded-xl bg-black/70 border border-amber-500/20 text-amber-400 hover:border-amber-400/50 hover:bg-amber-500/10 hover:scale-105 btn-active transition duration-300" title="Nyalakan musik">
+                <i data-lucide="volume-x" id="music-icon" class="w-5 h-5"></i>
             </button>
 
             <!-- DISCORD BUTTON -->
@@ -180,17 +493,12 @@
         
         <!-- HERO SECTION -->
         <section class="py-16 md:py-24 text-center reveal">
-            <!-- EMBLEM SHOWCASE -->
-            <div class="relative w-48 h-48 md:w-60 md:h-60 mx-auto mb-10 flex items-center justify-center">
-                <div class="absolute inset-0 dark:bg-amber-500/20 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-                <div class="relative z-10 w-full h-full rounded-3xl dark:bg-slate-900/80 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border p-6 backdrop-blur-2xl flex flex-col items-center justify-center shadow-2xl card-hover-effect">
-                    <div class="text-7xl md:text-8xl font-heading font-black gradient-brand-text tracking-tighter drop-shadow-xl">
-                        13
-                    </div>
-                    <div class="font-heading text-xs md:text-sm tracking-[0.4em] dark:text-slate-300 text-slate-700 font-bold mt-2 border-t dark:border-amber-500/30 border-blue-500/30 pt-2 w-3/4 uppercase">
-                        Studio
-                    </div>
-                </div>
+            <!-- MONUMENTAL TRANSPARENT LOGO -->
+            <div class="relative w-72 h-56 md:w-[30rem] md:h-72 mx-auto mb-8 flex items-center justify-center">
+                <div class="absolute inset-8 rounded-full bg-amber-500/10 blur-[70px] animate-pulse"></div>
+                <img src="assets/13studio_logo_transparent.png"
+                     alt="13 Studio Monument Logo"
+                     class="relative z-10 w-full h-full object-contain drop-shadow-[0_0_35px_rgba(212,175,55,0.28)]">
             </div>
 
             <h1 class="font-heading text-4xl md:text-7xl font-extrabold tracking-tight max-w-5xl mx-auto leading-tight mb-6">
@@ -475,33 +783,7 @@
 <!-- INTERACTIVE JAVASCRIPT -->
 <script>
     // Init Lucide Icons
-    lucide.createIcons();
-
-    // Dark / Light Mode Switcher Logic
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const sunIcon = document.getElementById('sun-icon');
-    const moonIcon = document.getElementById('moon-icon');
-    const gridBg = document.getElementById('grid-bg');
-
-    themeToggleBtn.addEventListener('click', () => {
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('light');
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
-            gridBg.classList.remove('bg-grid-dark');
-            gridBg.classList.add('bg-grid-light');
-        } else {
-            document.documentElement.classList.remove('light');
-            document.documentElement.classList.add('dark');
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden');
-            gridBg.classList.remove('bg-grid-light');
-            gridBg.classList.add('bg-grid-dark');
-        }
-    });
-
-    // Tab Navigation Switcher
+    lucide.createIcons();// Tab Navigation Switcher
     function switchTab(tabName) {
         document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => {
