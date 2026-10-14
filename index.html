@@ -1,4 +1,80 @@
 
+
+<!-- =========================================================
+     THIRTEEN STUDIO - WEBSITE CONFIG
+     Edit bagian ini saja untuk mengganti isi website.
+     ========================================================= -->
+<script>
+const SITE_CONFIG = {
+    // ===== BRAND =====
+    brand: {
+        name: "THIRTEEN",
+        studio: "STUDIO",
+        logo: "assets/13studio_logo_transparent.png",
+        pageTitle: "Thirteen Studio — Roblox World Building & Assets"
+    },
+
+    // ===== HERO =====
+    hero: {
+        title: "Crafting Mythic Environments &",
+        highlight: "Roblox Experiences",
+        description: "Arsitek dunia virtual spesialis pembuatan terrain realistis, pencahayaan atmosferik, serta pembentukan aset 3D berkualitas tinggi untuk komunitas Roblox.",
+        primaryButton: "Jelajahi Map",
+        secondaryButton: "Katalog Asset"
+    },
+
+    // ===== SOCIAL / LINKS =====
+    links: {
+        discord: "https://discord.gg/a2hbrNnF6v",
+        robloxGroup: "https://www.roblox.com/share/g/323140740"
+    },
+
+    // ===== MUSIC =====
+    music: {
+        enabled: true,
+        startVolume: 0.075,
+        droneFrequency: 110,
+        fifthFrequency: 164.81,
+        shimmerFrequency: 329.63
+    },
+
+    // ===== BACKGROUND =====
+    background: {
+        natureImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=85",
+        brightness: 0.32,
+        saturation: 0.55
+    },
+
+    // ===== FALLING LEAVES =====
+    leaves: {
+        enabled: true,
+        desktopCount: 34,
+        mobileCount: 18,
+        minSize: 7,
+        maxSize: 18,
+        minDuration: 10,
+        maxDuration: 23
+    },
+
+    // ===== FOOTER =====
+    footer: {
+        copyright: "THIRTEEN STUDIO",
+        tagline: "Roblox World Building & Assets",
+        creator: "@dzuullllll"
+    }
+};
+
+// Apply basic config values automatically.
+document.title = SITE_CONFIG.brand.pageTitle;
+
+document.documentElement.style.setProperty(
+    '--nature-image',
+    `url("${SITE_CONFIG.background.natureImage}")`
+);
+
+window.THirteenConfig = SITE_CONFIG;
+</script>
+
 <!-- CINEMATIC NATURE BACKGROUND -->
 <div class="nature-bg" aria-hidden="true">
     <div class="nature-image"></div>
@@ -18,15 +94,24 @@
 <script src="https://cdn.tailwindcss.com">
     // ================= FALLING LEAVES =================
     const leafLayer = document.getElementById('leaf-layer');
-    const leafCount = window.innerWidth < 700 ? 18 : 34;
+    const leafConfig = SITE_CONFIG.leaves;
+    const leafCount = window.innerWidth < 700
+        ? leafConfig.mobileCount
+        : leafConfig.desktopCount;
 
     for (let i = 0; i < leafCount; i++) {
         const leaf = document.createElement('span');
         leaf.className = 'falling-leaf';
         leaf.style.left = `${Math.random() * 100}%`;
-        leaf.style.setProperty('--size', `${7 + Math.random() * 11}px`);
+        leaf.style.setProperty(
+            '--size',
+            `${leafConfig.minSize + Math.random() * (leafConfig.maxSize - leafConfig.minSize)}px`
+        );
         leaf.style.setProperty('--opacity', `${0.18 + Math.random() * 0.36}`);
-        leaf.style.setProperty('--duration', `${10 + Math.random() * 13}s`);
+        leaf.style.setProperty(
+            '--duration',
+            `${leafConfig.minDuration + Math.random() * (leafConfig.maxDuration - leafConfig.minDuration)}s`
+        );
         leaf.style.setProperty('--delay', `${-Math.random() * 18}s`);
         leaf.style.setProperty('--drift', `${-90 + Math.random() * 180}px`);
         leaf.style.setProperty('--rot', `${Math.random() * 360}deg`);
@@ -55,7 +140,7 @@
         const drone = audioCtx.createOscillator();
         const droneGain = audioCtx.createGain();
         drone.type = 'sine';
-        drone.frequency.value = 110;
+        drone.frequency.value = SITE_CONFIG.music.droneFrequency;
         droneGain.gain.value = 0.045;
         drone.connect(droneGain).connect(masterGain);
         drone.start();
@@ -63,7 +148,7 @@
         const fifth = audioCtx.createOscillator();
         const fifthGain = audioCtx.createGain();
         fifth.type = 'triangle';
-        fifth.frequency.value = 164.81;
+        fifth.frequency.value = SITE_CONFIG.music.fifthFrequency;
         fifthGain.gain.value = 0.018;
         fifth.connect(fifthGain).connect(masterGain);
         fifth.start();
@@ -71,7 +156,7 @@
         const shimmer = audioCtx.createOscillator();
         const shimmerGain = audioCtx.createGain();
         shimmer.type = 'sine';
-        shimmer.frequency.value = 329.63;
+        shimmer.frequency.value = SITE_CONFIG.music.shimmerFrequency;
         shimmerGain.gain.value = 0.008;
         shimmer.connect(shimmerGain).connect(masterGain);
         shimmer.start();
@@ -79,7 +164,7 @@
         // Very slow breathing volume.
         const now = audioCtx.currentTime;
         masterGain.gain.setValueAtTime(0.0001, now);
-        masterGain.gain.exponentialRampToValueAtTime(0.075, now + 2.2);
+        masterGain.gain.exponentialRampToValueAtTime(SITE_CONFIG.music.startVolume, now + 2.2);
 
         ambientStarted = true;
         musicMuted = false;
@@ -97,7 +182,7 @@
         if (musicMuted) {
             audioCtx.resume();
             masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
-            masterGain.gain.exponentialRampToValueAtTime(0.075, audioCtx.currentTime + 1.2);
+            masterGain.gain.exponentialRampToValueAtTime(SITE_CONFIG.music.startVolume, audioCtx.currentTime + 1.2);
             musicMuted = false;
             musicButton.classList.add('is-playing');
             musicIcon.setAttribute('data-lucide', 'volume-2');
@@ -264,7 +349,7 @@
     .nature-image {
         position: absolute;
         inset: -3%;
-        background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=85');
+        background-image: var(--nature-image);
         background-size: cover;
         background-position: center;
         filter: saturate(.55) contrast(1.18) brightness(.32);
@@ -478,7 +563,7 @@
             </button>
 
             <!-- DISCORD BUTTON -->
-            <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hidden sm:inline-flex items-center gap-2 dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-300 shadow-lg dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active">
+            <a href="#" data-config-link="discord" target="_blank" class="hidden sm:inline-flex items-center gap-2 dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-300 shadow-lg dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active">
                 <i data-lucide="message-square" class="w-4 h-4"></i> Discord
             </a>
         </div>
@@ -617,7 +702,7 @@
                     <p class="dark:text-slate-400 text-slate-600 text-sm max-w-xl">Bergabunglah dalam grup komunitas Roblox resmi kami untuk info rilisan map terbaru dan perk eksklusif.</p>
                 </div>
             </div>
-            <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="px-8 py-4 rounded-xl dark:bg-amber-500 bg-blue-600 dark:text-slate-950 text-white font-bold transition text-sm whitespace-nowrap btn-active shadow-lg">
+            <a href="#" data-config-link="robloxGroup" target="_blank" class="px-8 py-4 rounded-xl dark:bg-amber-500 bg-blue-600 dark:text-slate-950 text-white font-bold transition text-sm whitespace-nowrap btn-active shadow-lg">
                 Join Roblox Group
             </a>
         </div>
@@ -720,7 +805,7 @@
                     </ul>
                 </div>
 
-                <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="mt-8 py-3.5 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-slate-700 hover:bg-slate-200 dark:text-slate-200 text-slate-800 font-semibold text-xs transition flex items-center justify-center gap-2 border dark:border-slate-700 border-slate-300 btn-active">
+                <a href="#" data-config-link="discord" target="_blank" class="mt-8 py-3.5 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-slate-700 hover:bg-slate-200 dark:text-slate-200 text-slate-800 font-semibold text-xs transition flex items-center justify-center gap-2 border dark:border-slate-700 border-slate-300 btn-active">
                     <i data-lucide="message-square" class="w-4 h-4"></i> Masuk Server Discord
                 </a>
             </div>
@@ -774,14 +859,33 @@
         </div>
 
         <div class="flex items-center gap-6">
-            <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Discord Server</a>
-            <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Roblox Group</a>
+            <a href="#" data-config-link="discord" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Discord Server</a>
+            <a href="#" data-config-link="robloxGroup" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Roblox Group</a>
         </div>
     </div>
 </footer>
 
 <!-- INTERACTIVE JAVASCRIPT -->
 <script>
+
+    // Apply centralized SITE_CONFIG values to links/text.
+    document.querySelectorAll('[data-config-link="discord"]').forEach(el => {
+        el.href = SITE_CONFIG.links.discord;
+    });
+
+    document.querySelectorAll('[data-config-link="robloxGroup"]').forEach(el => {
+        el.href = SITE_CONFIG.links.robloxGroup;
+    });
+
+    const musicControl = document.getElementById('music-toggle');
+    if (!SITE_CONFIG.music.enabled && musicControl) {
+        musicControl.style.display = 'none';
+    }
+
+    if (!SITE_CONFIG.leaves.enabled && leafLayer) {
+        leafLayer.style.display = 'none';
+    }
+
     // Init Lucide Icons
     lucide.createIcons();// Tab Navigation Switcher
     function switchTab(tabName) {
