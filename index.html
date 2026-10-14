@@ -1,359 +1,562 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thirteen Studio — World Architects & Roblox Experiences</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                fontFamily: {
+                    heading: ['Cinzel', 'serif'],
+                    body: ['Plus Jakarta Sans', 'sans-serif'],
+                },
+                colors: {
+                    gold: {
+                        300: '#fde047',
+                        400: '#facc15',
+                        500: '#eab308',
+                        600: '#ca8a04',
+                        glow: '#d4af37',
+                    },
+                    royal: {
+                        400: '#60a5fa',
+                        500: '#3b82f6',
+                        600: '#2563eb',
+                        700: '#1d4ed8',
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Custom Styling & Animations -->
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Subtle Grid Background Pattern */
+    .bg-grid-dark {
+        background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+        background-size: 32px 32px;
+    }
+    .bg-grid-light {
+        background-image: radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px);
+        background-size: 32px 32px;
+    }
+
+    /* Glow Text Effect */
+    .dark .text-glow {
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+    .light .text-glow {
+        text-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Golden Gradient Text (Dark) */
+    .dark .gradient-brand-text {
+        background: linear-gradient(135deg, #FFF0B1 0%, #D4AF37 50%, #996515 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Blue Gradient Text (Light) */
+    .light .gradient-brand-text {
+        background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #60A5FA 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Hover 3D Lift & Glow Cards */
+    .card-hover-effect {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .card-hover-effect:hover {
+        transform: translateY(-8px) scale(1.01);
+    }
+    .dark .card-hover-effect:hover {
+        box-shadow: 0 20px 40px -15px rgba(212, 175, 55, 0.15);
+        border-color: rgba(212, 175, 55, 0.5);
+    }
+    .light .card-hover-effect:hover {
+        box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.18);
+        border-color: rgba(37, 99, 235, 0.5);
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Button Click Active Ripple/Scale */
+    .btn-active:active {
+        transform: scale(0.96);
+    }
+
+    /* Tab Content Toggle */
+    .tab-panel {
+        display: none;
+    }
+    .tab-panel.active {
+        display: block;
+    }
+</style>
+
+
+<!-- AMBIENT BACKGROUND GLOW & GRID -->
+<div class="fixed inset-0 pointer-events-none z-0">
+    <div id="grid-bg" class="absolute inset-0 bg-grid-dark transition-opacity duration-500"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] dark:bg-amber-500/10 bg-blue-500/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/3 right-10 w-[500px] h-[300px] dark:bg-yellow-600/5 bg-royal-600/10 rounded-full blur-[100px]"></div>
+</div>
+
+<!-- NAVBAR HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-slate-950/80 bg-white/80 backdrop-blur-xl dark:border-amber-500/20 border-slate-200 border-b">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #07090e;
-        }
-        
-        .font-cinzel {
-            font-family: 'Cinzel', serif;
-        }
+        <!-- BRAND LOGO -->
+        <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3.5 group">
+            <div class="w-11 h-11 rounded-2xl dark:bg-gradient-to-br dark:from-amber-500/20 dark:to-amber-900/40 dark:border-amber-500/40 bg-gradient-to-br from-blue-500/20 to-blue-700/30 border-blue-500/40 border flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-105">
+                <span class="font-heading font-black dark:text-amber-400 text-blue-600 text-xl tracking-tighter">13</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="font-heading font-extrabold text-lg tracking-widest gradient-brand-text leading-none">THIRTEEN</span>
+                <span class="text-[10px] tracking-[0.35em] dark:text-amber-400/80 text-blue-600 font-bold uppercase mt-1">STUDIO</span>
+            </div>
+        </a>
 
-        /* Gold gradient text */
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #FFF0B1 0%, #D4AF37 50%, #aa820a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        <!-- NAV MENU BUTTONS -->
+        <nav class="hidden md:flex items-center gap-1.5 dark:bg-slate-900/80 bg-slate-100 p-1.5 rounded-2xl dark:border-slate-800 border-slate-200 border backdrop-blur-md">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 shadow-sm">
+                Dashboard
+            </button>
+            <button onclick="switchTab('creations')" id="nav-creations" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200">
+                Creations
+            </button>
+            <button onclick="switchTab('products')" id="nav-products" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200">
+                Products & Assets
+            </button>
+            <button onclick="switchTab('commissions')" id="nav-commissions" class="nav-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 dark:text-slate-400 text-slate-600 hover:text-slate-900 dark:hover:text-slate-200 flex items-center gap-1.5">
+                <i data-lucide="hammer" class="w-4 h-4 dark:text-amber-400 text-blue-600"></i> The Forge
+            </button>
+        </nav>
 
-        /* Ambient Glow & Background Pattern */
-        .bg-nature-glow {
-            background: 
-                radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 80% 60%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
-        }
+        <!-- CONTROLS & DISCORD LINK -->
+        <div class="flex items-center gap-3">
+            <!-- DARK / LIGHT MODE SWITCHER -->
+            <button id="theme-toggle" class="p-2.5 rounded-xl dark:bg-slate-900 bg-slate-100 dark:border-slate-800 border-slate-200 border dark:text-amber-400 text-blue-600 hover:scale-105 btn-active transition duration-300" title="Ubah Tema">
+                <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
+            </button>
 
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-    </style>
-</head>
-<body class="text-slate-200 antialiased selection:bg-amber-500/30 selection:text-amber-200 bg-nature-glow min-h-screen flex flex-col justify-between">
-
-    <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-amber-900/20">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            
-            <!-- LOGO BRAND -->
-            <a href="#" onclick="switchTab('dashboard')" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-900/40 border border-amber-500/40 flex items-center justify-center shadow-lg shadow-amber-500/10 group-hover:border-amber-400 transition duration-300">
-                    <span class="font-cinzel font-black text-amber-400 text-lg">13</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-cinzel font-bold text-lg tracking-widest gold-gradient-text leading-none">THIRTEEN</span>
-                    <span class="text-[10px] tracking-[0.3em] text-emerald-400/80 font-medium uppercase mt-1">Studio</span>
-                </div>
-            </a>
-
-            <!-- NAVIGATION MENU -->
-            <nav class="hidden md:flex items-center gap-2 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800/80 backdrop-blur-md">
-                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-5 py-2 rounded-xl text-sm font-semibold transition duration-300 text-amber-400 bg-amber-500/10 border border-amber-500/30">
-                    Dashboard
-                </button>
-                <button onclick="switchTab('creations')" id="nav-creations" class="nav-btn px-5 py-2 rounded-xl text-sm font-semibold transition duration-300 text-slate-400 hover:text-slate-200">
-                    Creations
-                </button>
-                <button onclick="switchTab('commissions')" id="nav-commissions" class="nav-btn px-5 py-2 rounded-xl text-sm font-semibold transition duration-300 text-slate-400 hover:text-slate-200 flex items-center gap-1.5">
-                    <i data-lucide="hammer" class="w-4 h-4 text-amber-400"></i> Commissions
-                </button>
-            </nav>
-
-            <!-- DISCORD ACTION -->
-            <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hidden sm:inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-300 shadow-lg shadow-amber-600/20 hover:scale-105">
-                <i data-lucide="message-square" class="w-4 h-4 fill-slate-950"></i> Discord Server
+            <!-- DISCORD BUTTON -->
+            <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hidden sm:inline-flex items-center gap-2 dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all duration-300 shadow-lg dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active">
+                <i data-lucide="message-square" class="w-4 h-4"></i> Discord
             </a>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="pt-24 pb-16 flex-grow">
+<!-- MAIN CONTENT CONTAINERS -->
+<main class="relative z-10 pt-28 pb-20 flex-grow">
 
-        <!-- ================= TAB 1: DASHBOARD ================= -->
-        <div id="tab-dashboard" class="tab-content active max-w-7xl mx-auto px-6">
-            
-            <!-- HERO SECTION -->
-            <section class="py-12 md:py-20 text-center relative">
-                <!-- LOGO SHOWCASE WITH TRANSPARENT MONUMENT EFFECT -->
-                <div class="relative w-48 h-48 md:w-64 md:h-64 mx-auto mb-8 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-amber-500/20 rounded-full blur-3xl animate-pulse"></div>
-                    <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-2xl"></div>
-                    
-                    <!-- Frame Monumental Gold & Stone -->
-                    <div class="relative z-10 w-full h-full rounded-3xl bg-slate-900/60 border border-amber-500/30 p-6 backdrop-blur-xl flex flex-col items-center justify-center shadow-2xl shadow-amber-950/50 group">
-                        <div class="text-6xl md:text-8xl font-cinzel font-black gold-gradient-text tracking-tighter drop-shadow-[0_10px_20px_rgba(212,175,55,0.3)]">
-                            13
-                        </div>
-                        <div class="font-cinzel text-sm md:text-base tracking-[0.4em] text-slate-300 font-bold mt-2 border-t border-amber-500/30 pt-2 w-3/4">
-                            STUDIO
-                        </div>
+    <!-- ================= TAB 1: DASHBOARD ================= -->
+    <div id="tab-dashboard" class="tab-panel active max-w-7xl mx-auto px-6">
+        
+        <!-- HERO SECTION -->
+        <section class="py-16 md:py-24 text-center reveal">
+            <!-- EMBLEM SHOWCASE -->
+            <div class="relative w-48 h-48 md:w-60 md:h-60 mx-auto mb-10 flex items-center justify-center">
+                <div class="absolute inset-0 dark:bg-amber-500/20 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+                <div class="relative z-10 w-full h-full rounded-3xl dark:bg-slate-900/80 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border p-6 backdrop-blur-2xl flex flex-col items-center justify-center shadow-2xl card-hover-effect">
+                    <div class="text-7xl md:text-8xl font-heading font-black gradient-brand-text tracking-tighter drop-shadow-xl">
+                        13
+                    </div>
+                    <div class="font-heading text-xs md:text-sm tracking-[0.4em] dark:text-slate-300 text-slate-700 font-bold mt-2 border-t dark:border-amber-500/30 border-blue-500/30 pt-2 w-3/4 uppercase">
+                        Studio
                     </div>
                 </div>
+            </div>
 
-                <h1 class="font-cinzel text-4xl md:text-6xl font-black tracking-tight max-w-4xl mx-auto leading-tight mb-6">
-                    Forging Mythic Worlds & <span class="gold-gradient-text">Immersive Roblox Realms</span>
-                </h1>
-                
-                <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-                    Kami memahat keindahan alam, pegunungan megah, dan atmosfer mistis ke dalam bentuk pengalaman virtual Roblox yang tak tertandingi.
-                </p>
+            <h1 class="font-heading text-4xl md:text-7xl font-extrabold tracking-tight max-w-5xl mx-auto leading-tight mb-6">
+                Crafting Mythic Environments & <span class="gradient-brand-text text-glow">Roblox Experiences</span>
+            </h1>
+            
+            <p class="dark:text-slate-400 text-slate-600 text-base md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+                Arsitek dunia virtual spesialis pembuatan terrain realistis, pencahayaan atmosferik, serta pembentukan aset 3D berkualitas tinggi untuk komunitas Roblox.
+            </p>
 
-                <div class="flex flex-wrap items-center justify-center gap-4">
-                    <button onclick="switchTab('creations')" class="px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold transition duration-300 shadow-xl shadow-amber-500/20 hover:scale-105 flex items-center gap-2">
-                        <i data-lucide="compass" class="w-5 h-5"></i> Jelajahi Creations
-                    </button>
-                    <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="px-8 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-emerald-500/30 text-emerald-400 font-bold transition duration-300 flex items-center gap-2 backdrop-blur-md">
-                        <i data-lucide="users" class="w-5 h-5"></i> Join Komunitas Roblox
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button onclick="switchTab('creations')" class="px-8 py-4 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition-all duration-300 shadow-xl dark:shadow-amber-500/20 shadow-blue-500/20 hover:scale-105 btn-active flex items-center gap-2">
+                    <i data-lucide="compass" class="w-5 h-5"></i> Jelajahi Map
+                </button>
+                <button onclick="switchTab('products')" class="px-8 py-4 rounded-xl dark:bg-slate-900/90 bg-white dark:border-slate-800 border-slate-300 border dark:text-slate-200 text-slate-800 font-bold text-sm transition-all duration-300 hover:scale-105 btn-active flex items-center gap-2 shadow-sm">
+                    <i data-lucide="box" class="w-5 h-5 dark:text-amber-400 text-blue-600"></i> Katalog Asset
+                </button>
+            </div>
+        </section>
+
+        <!-- STATS / HIGHLIGHT CARDS -->
+        <section class="py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
+                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
+                    <i data-lucide="mountain" class="w-7 h-7"></i>
+                </div>
+                <h3 class="font-heading text-xl font-bold mb-3">Immersive Terrain</h3>
+                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Pengolahan landscape pegunungan, alam liar, dan tebing realistis dengan optimasi performa tinggi.</p>
+            </div>
+
+            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
+                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
+                    <i data-lucide="layers" class="w-7 h-7"></i>
+                </div>
+                <h3 class="font-heading text-xl font-bold mb-3">PBR Assets & Models</h3>
+                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Aset arsitektur dan prop 3D berkualitas industri yang siap langsung diintegrasikan ke Roblox Studio.</p>
+            </div>
+
+            <div class="reveal dark:bg-slate-900/50 bg-white/70 dark:border-slate-800/80 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl card-hover-effect">
+                <div class="w-14 h-14 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
+                    <i data-lucide="hammer" class="w-7 h-7"></i>
+                </div>
+                <h3 class="font-heading text-xl font-bold mb-3">Custom Commission</h3>
+                <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed">Layanan pemesanan pembuatan dunia kustom (The Forge) secara langsung melalui Discord ticket.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= TAB 2: CREATIONS ================= -->
+    <div id="tab-creations" class="tab-panel max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto my-12 reveal">
+            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
+                Official Projects
+            </span>
+            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">Featured Showcase</h2>
+            <p class="dark:text-slate-400 text-slate-600">Jelajahi karya dunia Roblox yang pernah kami rancang dan gabung komunitas resmi.</p>
+        </div>
+
+        <!-- MAP SHOWCASE GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <!-- Map 1 -->
+            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/20 border-slate-200 border rounded-3xl overflow-hidden backdrop-blur-xl card-hover-effect flex flex-col justify-between">
+                <div>
+                    <div class="h-64 bg-slate-800 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Mount Niskala Expedition" class="w-full h-full object-cover">
+                        <span class="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md dark:text-amber-300 text-blue-400 border dark:border-amber-500/30 border-blue-500/30 px-3 py-1 rounded-xl text-xs font-semibold">
+                            Expedition / Wilderness
+                        </span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-heading text-2xl font-bold mb-3">Mount Niskala Expedition</h3>
+                        <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed mb-6">
+                            Petualangan pendakian medan realistis dengan atmosfer guram, tebing terjal, dan sistem pencahayaan kabut alami.
+                        </p>
+                    </div>
+                </div>
+                <div class="px-8 pb-8">
+                    <a href="https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition" target="_blank" class="w-full py-3.5 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition flex items-center justify-center gap-2 btn-active shadow-lg">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Play Experience
                     </a>
                 </div>
-            </section>
+            </div>
 
-            <!-- HIGHLIGHT STATS / LORE -->
-            <section class="py-12 border-t border-slate-800/80">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-slate-900/40 border border-amber-900/30 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i data-lucide="mountain" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="font-cinzel text-xl font-bold text-slate-200 mb-2">Natural Terrain Artistry</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Penyusunan terrain dan lingkungan alam organik dengan kualitas visual tinggi dan suasana yang imersif.</p>
+            <!-- Map 2 -->
+            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/20 border-slate-200 border rounded-3xl overflow-hidden backdrop-blur-xl card-hover-effect flex flex-col justify-between">
+                <div>
+                    <div class="h-64 bg-slate-800 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=80" alt="Santara" class="w-full h-full object-cover">
+                        <span class="absolute top-4 right-4 bg-slate-950/80 backdrop-blur-md dark:text-amber-300 text-blue-400 border dark:border-amber-500/30 border-blue-500/30 px-3 py-1 rounded-xl text-xs font-semibold">
+                            Nature / Landscape
+                        </span>
                     </div>
-
-                    <div class="bg-slate-900/40 border border-emerald-900/30 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4">
-                            <i data-lucide="map" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="font-cinzel text-xl font-bold text-slate-200 mb-2">Expedition & Worlds</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Map eksperimental seperti Mount Niskala Expedition dan Santara yang siap mengeksplorasi batas imajinasi.</p>
-                    </div>
-
-                    <div class="bg-slate-900/40 border border-amber-900/30 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i data-lucide="hammer" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="font-cinzel text-xl font-bold text-slate-200 mb-2">Custom Order Forge</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed">Pemesanan kustomisasi dunia Roblox yang disesuaikan secara khusus sesuai visi naratif proyek Anda.</p>
+                    <div class="p-8">
+                        <h3 class="font-heading text-2xl font-bold mb-3">Santara</h3>
+                        <p class="dark:text-slate-400 text-slate-600 text-sm leading-relaxed mb-6">
+                            Eksplorasi keindahan eksotis alam fantasi terbuka dengan vegetasi rimbun, air terjun, dan pencahayaan dinamis.
+                        </p>
                     </div>
                 </div>
-            </section>
+                <div class="px-8 pb-8">
+                    <a href="https://www.roblox.com/id/games/89877678091980/Santara" target="_blank" class="w-full py-3.5 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold text-sm transition flex items-center justify-center gap-2 btn-active shadow-lg">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Play Experience
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <!-- ================= TAB 2: CREATIONS ================= -->
-        <div id="tab-creations" class="tab-content max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto my-12">
-                <span class="text-xs font-bold tracking-[0.3em] uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full">
-                    Official Creations
-                </span>
-                <h2 class="font-cinzel text-3xl md:text-5xl font-extrabold mt-4 mb-4">Dunia & Komunitas</h2>
-                <p class="text-slate-400">Jelajahi map buatan Thirteen Studio serta gabung dalam jaringan player & developer kami.</p>
+        <!-- COMMUNITY BANNER -->
+        <div class="reveal dark:bg-slate-900/80 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl shadow-xl">
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 shrink-0">
+                    <i data-lucide="users" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading text-2xl font-bold mb-2">Thirteen Studio Roblox Group</h3>
+                    <p class="dark:text-slate-400 text-slate-600 text-sm max-w-xl">Bergabunglah dalam grup komunitas Roblox resmi kami untuk info rilisan map terbaru dan perk eksklusif.</p>
+                </div>
+            </div>
+            <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="px-8 py-4 rounded-xl dark:bg-amber-500 bg-blue-600 dark:text-slate-950 text-white font-bold transition text-sm whitespace-nowrap btn-active shadow-lg">
+                Join Roblox Group
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= TAB 3: PRODUCTS / ASSETS ================= -->
+    <div id="tab-products" class="tab-panel max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto my-12 reveal">
+            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
+                Asset Store
+            </span>
+            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">Asset Catalog</h2>
+            <p class="dark:text-slate-400 text-slate-600">Aset Roblox Studio siap pakai untuk mempercepat pembuatan game Anda.</p>
+        </div>
+
+        <!-- PRODUCT CARDS GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Asset Item 1 -->
+            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
+                <div>
+                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="PBR Nature Pack" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 450 / IDR 50k</span>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold mb-2">PBR Rock & Mountain Pack</h3>
+                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Paket aset batu 3D bermaterial PBR tekstur 2K tinggi detail, siap pakai untuk terrain Roblox.</p>
+                </div>
+                <button onclick="orderAsset('PBR Rock & Mountain Pack')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
+                </button>
             </div>
 
-            <!-- SHOWCASE MAPS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                
-                <!-- Map 1: Mount Niskala Expedition -->
-                <div class="bg-slate-900/60 border border-amber-500/20 rounded-3xl overflow-hidden backdrop-blur-md hover:border-amber-500/50 transition duration-500 group">
-                    <div class="h-64 bg-slate-800 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-10"></div>
-                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Mount Niskala" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                        <span class="absolute top-4 right-4 z-20 bg-slate-950/80 border border-amber-500/30 px-3 py-1 rounded-xl text-xs font-semibold text-amber-300">
-                            Expedition / Mountain
-                        </span>
+            <!-- Asset Item 2 -->
+            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
+                <div>
+                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Custom Terrain Pack" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 800 / IDR 90k</span>
                     </div>
-                    <div class="p-8 relative z-20 -mt-10">
-                        <h3 class="font-cinzel text-2xl font-bold mb-3 text-slate-100">Mount Niskala Expedition</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-                            Ekspedisi pendakian gunung ekstrem dengan medan berbatu, atmosfer dingin yang diselimuti kabut, serta pemandangan puncak yang menakjubkan.
-                        </p>
-                        <a href="https://www.roblox.com/id/games/134915507763641/Mount-Niskala-Expedition" target="_blank" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10">
-                            <i data-lucide="play" class="w-4 h-4 fill-slate-950"></i> Mainkan di Roblox
-                        </a>
-                    </div>
+                    <h3 class="font-heading text-xl font-bold mb-2">Custom Terrain & Island Map</h3>
+                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Templat map pulau dan tebing siap pakai lengkap dengan water, atmosphere, dan lighting preset.</p>
                 </div>
-
-                <!-- Map 2: Santara -->
-                <div class="bg-slate-900/60 border border-emerald-500/20 rounded-3xl overflow-hidden backdrop-blur-md hover:border-emerald-500/50 transition duration-500 group">
-                    <div class="h-64 bg-slate-800 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent z-10"></div>
-                        <img src="https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1200&q=80" alt="Santara" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                        <span class="absolute top-4 right-4 z-20 bg-slate-950/80 border border-emerald-500/30 px-3 py-1 rounded-xl text-xs font-semibold text-emerald-300">
-                            Nature / Realm
-                        </span>
-                    </div>
-                    <div class="p-8 relative z-20 -mt-10">
-                        <h3 class="font-cinzel text-2xl font-bold mb-3 text-slate-100">Santara</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-                            Penjelajahan lanskap alam terbuka bernuansa magis dan asri, menghadirkan detail lingkungan hidup yang tenang dan memanjakan mata.
-                        </p>
-                        <a href="https://www.roblox.com/id/games/89877678091980/Santara" target="_blank" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
-                            <i data-lucide="play" class="w-4 h-4 fill-white"></i> Mainkan di Roblox
-                        </a>
-                    </div>
-                </div>
-
+                <button onclick="orderAsset('Custom Terrain & Island Map')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
+                </button>
             </div>
 
-            <!-- KOMUNITAS ROBLOX BANNER -->
-            <div class="bg-gradient-to-r from-slate-900 via-slate-900/90 to-emerald-950/40 border border-emerald-500/30 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl">
-                <div class="flex items-center gap-6">
-                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-                        <i data-lucide="users" class="w-8 h-8"></i>
+            <!-- Asset Item 3 -->
+            <div class="reveal dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-6 backdrop-blur-xl card-hover-effect flex flex-col justify-between">
+                <div>
+                    <div class="h-48 bg-slate-800 rounded-2xl mb-6 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" alt="Atmosphere Lighting Preset" class="w-full h-full object-cover">
+                        <span class="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md text-xs font-bold px-3 py-1 rounded-lg text-amber-400">R$ 300 / IDR 35k</span>
                     </div>
-                    <div>
-                        <h3 class="font-cinzel text-2xl font-bold text-slate-100 mb-2">Thirteen Studio Roblox Group</h3>
-                        <p class="text-slate-400 text-sm max-w-xl">Bergabunglah dengan grup resmi Roblox kami untuk mendapatkan info update map, perk khusus di dalam game, dan event eksklusif.</p>
-                    </div>
+                    <h3 class="font-heading text-xl font-bold mb-2">Mythic Atmosphere & Lighting</h3>
+                    <p class="dark:text-slate-400 text-slate-600 text-xs leading-relaxed mb-6">Kumpulan preset Lighting, Skybox, SunRays, dan Atmosphere mistis untuk visual dramatis.</p>
                 </div>
-                <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition text-sm whitespace-nowrap shadow-lg shadow-emerald-500/20">
-                    Join Group Roblox
+                <button onclick="orderAsset('Mythic Atmosphere & Lighting')" class="w-full py-3 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-amber-500 hover:bg-blue-600 dark:text-slate-200 text-slate-800 hover:text-slate-950 hover:text-white font-bold text-xs transition duration-300 flex items-center justify-center gap-2 btn-active">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i> Beli via Discord
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= TAB 4: COMMISSIONS (THE FORGE) ================= -->
+    <div id="tab-commissions" class="tab-panel max-w-5xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto my-12 reveal">
+            <span class="text-xs font-bold tracking-[0.3em] uppercase dark:text-amber-400 text-blue-600 dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/20 border-blue-500/20 border px-4 py-1.5 rounded-full">
+                Custom Order
+            </span>
+            <h2 class="font-heading text-3xl md:text-5xl font-extrabold mt-4 mb-4">The Forge</h2>
+            <p class="dark:text-slate-400 text-slate-600">Pahat dunia Roblox impian Anda secara khusus bersama arsitek Thirteen Studio.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 reveal">
+            <div class="md:col-span-5 dark:bg-slate-900/60 bg-white/80 dark:border-amber-500/30 border-blue-500/30 border rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-between shadow-xl">
+                <div>
+                    <div class="w-12 h-12 rounded-2xl dark:bg-amber-500/10 bg-blue-500/10 dark:border-amber-500/30 border-blue-500/30 border flex items-center justify-center dark:text-amber-400 text-blue-600 mb-6">
+                        <i data-lucide="hammer" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold mb-4">Alur Pemesanan Custom</h3>
+                    <p class="dark:text-slate-300 text-slate-600 text-xs leading-relaxed mb-6">
+                        Kami melayani pembuatan terrain kustom, environment design, dan pemodelan map dari awal sesuai narasi proyek game Anda.
+                    </p>
+                    <ul class="space-y-4 text-xs dark:text-slate-400 text-slate-600 border-t dark:border-slate-800 border-slate-200 pt-6">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">1</span>
+                            Isi form draf deskripsi proyek Anda
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">2</span>
+                            Klik tombol untuk mengopi format pesan
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full dark:bg-amber-500/20 bg-blue-500/20 dark:text-amber-400 text-blue-600 flex items-center justify-center font-bold">3</span>
+                            Kirimkan ke Ticket Discord Thirteen Studio
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="mt-8 py-3.5 rounded-xl dark:bg-slate-800 bg-slate-100 hover:dark:bg-slate-700 hover:bg-slate-200 dark:text-slate-200 text-slate-800 font-semibold text-xs transition flex items-center justify-center gap-2 border dark:border-slate-700 border-slate-300 btn-active">
+                    <i data-lucide="message-square" class="w-4 h-4"></i> Masuk Server Discord
                 </a>
             </div>
-        </div>
 
-        <!-- ================= TAB 3: COMMISSIONS (THE FORGE) ================= -->
-        <div id="tab-commissions" class="tab-content max-w-5xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto my-12">
-                <span class="text-xs font-bold tracking-[0.3em] uppercase text-amber-400 bg-amber-500/10 border border-amber-500/20 px-4 py-1.5 rounded-full">
-                    Custom Development
-                </span>
-                <h2 class="font-cinzel text-3xl md:text-5xl font-extrabold mt-4 mb-4">The Forge</h2>
-                <p class="text-slate-400">Pahat dunia Roblox impian Anda bersama arsitek lingkungan Thirteen Studio.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-                <!-- LORE & ALUR AMBER CARD -->
-                <div class="md:col-span-5 bg-slate-900/60 border border-amber-500/30 rounded-3xl p-8 backdrop-blur-xl flex flex-col justify-between">
+            <!-- FORM -->
+            <div class="md:col-span-7 dark:bg-slate-900/60 bg-white/80 dark:border-slate-800 border-slate-200 border rounded-3xl p-8 backdrop-blur-xl shadow-xl">
+                <form onsubmit="handleCustomOrder(event)" class="space-y-5">
                     <div>
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-6">
-                            <i data-lucide="hammer" class="w-6 h-6"></i>
-                        </div>
-                        <h3 class="font-cinzel text-xl font-bold mb-4 gold-gradient-text">Prosedur Custom Order</h3>
-                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
-                            Setiap proyek buatan kami diperlakukan sebagai karya seni alami. Hubungi tim kami langsung di Discord untuk mendiskusikan konsep, ukuran map, dan anggaran Anda.
-                        </p>
-                        <ul class="space-y-4 text-xs text-slate-400 border-t border-slate-800 pt-6">
-                            <li class="flex items-center gap-3">
-                                <span class="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold">1</span>
-                                Isi draf deskripsi keinginan Anda
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <span class="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold">2</span>
-                                Klik tombol untuk mengopi format pesan
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <span class="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-bold">3</span>
-                                Kirim ke ticket Discord Thirteen Studio
-                            </li>
-                        </ul>
+                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Username Roblox / Discord</label>
+                        <input type="text" id="custom-user" required placeholder="misal: @username" class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition">
                     </div>
 
-                    <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="mt-8 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition flex items-center justify-center gap-2 border border-slate-700">
-                        <i data-lucide="external-link" class="w-4 h-4"></i> Buka Server Discord Langsung
-                    </a>
-                </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Jenis Layanan Custom</label>
+                        <select id="custom-type" class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition">
+                            <option value="Custom Mountain & Terrain Sculpting">Custom Mountain & Terrain Sculpting</option>
+                            <option value="Full World Environment Design">Full World Environment Design</option>
+                            <option value="PBR Asset Modeling">PBR Asset Modeling & Props</option>
+                            <option value="Lighting & Polish Optimization">Lighting & Polish Optimization</option>
+                        </select>
+                    </div>
 
-                <!-- FORM BUILDER -->
-                <div class="md:col-span-7 bg-slate-900/60 border border-slate-800 rounded-3xl p-8 backdrop-blur-xl">
-                    <h3 class="font-cinzel text-xl font-bold mb-6 text-slate-100">Draft Custom Order</h3>
-                    
-                    <form id="forge-form" onsubmit="handleOrderSubmit(event)" class="space-y-5">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Username Roblox / Discord Anda</label>
-                            <input type="text" id="order-user" required placeholder="misal: Username#1234" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500 transition">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-600 mb-2">Deskripsi Proyek & Ukuran Map</label>
+                        <textarea id="custom-desc" rows="4" required placeholder="Jelaskan tema, estimasi ukuran map, serta referensi visual yang diinginkan..." class="w-full dark:bg-slate-950 bg-slate-50 dark:border-slate-800 border-slate-300 border rounded-xl px-4 py-3 text-sm focus:outline-none dark:focus:border-amber-500 focus:border-blue-500 transition"></textarea>
+                    </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Jenis Layanan</label>
-                            <select id="order-type" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500 transition">
-                                <option value="Terrain & Landscape Building">Custom Terrain & Mountain Sculpting</option>
-                                <option value="Full Map Creation">Full Environment & Map Design</option>
-                                <option value="Atmosphere & Lighting Optimization">Atmosphere & Lighting Polish</option>
-                                <option value="Lainnya">Lainnya (Custom Request)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Detail Konsep & Deskripsi Map</label>
-                            <textarea id="order-desc" rows="4" required placeholder="Jelaskan tema (misal: pegunungan mistis, hutan salju), ukuran map, dan fitur utama yang diinginkan..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-amber-500 transition"></textarea>
-                        </div>
-
-                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold transition duration-300 shadow-xl shadow-amber-500/20 flex items-center justify-center gap-2">
-                            <i data-lucide="send" class="w-4 h-4"></i> Salin Format & Buka Discord
-                        </button>
-                    </form>
-                </div>
+                    <button type="submit" class="w-full py-4 rounded-xl dark:bg-gradient-to-r dark:from-amber-500 dark:to-amber-600 bg-gradient-to-r from-blue-600 to-blue-700 dark:text-slate-950 text-white font-bold transition duration-300 shadow-xl flex items-center justify-center gap-2 btn-active">
+                        <i data-lucide="send" class="w-4 h-4"></i> Salin Format & Buka Discord
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
 
-    </main>
+</main>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 border-t border-slate-900 py-8">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-cinzel font-bold text-amber-500">13 STUDIO</span>
-                <span>— Forging Worlds Since 2026</span>
-            </div>
-            <div class="flex items-center gap-6">
-                <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hover:text-amber-400 transition">Discord</a>
-                <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="hover:text-emerald-400 transition">Roblox Group</a>
-            </div>
+<!-- CREDITS & FOOTER SECTION -->
+<footer class="relative z-10 dark:bg-slate-950 bg-white dark:border-slate-900 border-slate-200 border-t py-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+        
+        <div class="flex items-center gap-3">
+            <span class="font-heading font-black text-sm dark:text-amber-400 text-blue-600">THIRTEEN STUDIO</span>
+            <span>— Roblox World Building & Assets</span>
         </div>
-    </footer>
 
-    <!-- SCRIPT TABS & INTERACTIVE -->
-    <script>
-        // Init Lucide Icons
-        lucide.createIcons();
+        <!-- CREDITS MENTION -->
+        <div class="flex items-center gap-2 dark:bg-slate-900 bg-slate-100 px-4 py-2 rounded-xl dark:border-slate-800 border-slate-200 border">
+            <i data-lucide="code" class="w-4 h-4 dark:text-amber-400 text-blue-600"></i>
+            <span>Created & Designed by <strong class="dark:text-amber-400 text-blue-600 font-bold">@dzuullllll</strong></span>
+        </div>
 
-        // Switch Navigation Tabs
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-amber-400', 'bg-amber-500/10', 'border', 'border-amber-500/30');
-                btn.classList.add('text-slate-400');
-            });
+        <div class="flex items-center gap-6">
+            <a href="https://discord.gg/a2hbrNnF6v" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Discord Server</a>
+            <a href="https://www.roblox.com/share/g/323140740" target="_blank" class="hover:dark:text-amber-400 hover:text-blue-600 transition">Roblox Group</a>
+        </div>
+    </div>
+</footer>
 
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            
-            const activeNav = document.getElementById(`nav-${tabName}`);
-            if (activeNav) {
-                activeNav.classList.remove('text-slate-400');
-                activeNav.classList.add('text-amber-400', 'bg-amber-500/10', 'border', 'border-amber-500/30');
+<!-- INTERACTIVE JAVASCRIPT -->
+<script>
+    // Init Lucide Icons
+    lucide.createIcons();
+
+    // Dark / Light Mode Switcher Logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    const gridBg = document.getElementById('grid-bg');
+
+    themeToggleBtn.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+            gridBg.classList.remove('bg-grid-dark');
+            gridBg.classList.add('bg-grid-light');
+        } else {
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            gridBg.classList.remove('bg-grid-light');
+            gridBg.classList.add('bg-grid-dark');
+        }
+    });
+
+    // Tab Navigation Switcher
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('dark:text-amber-400', 'text-blue-600', 'dark:bg-amber-500/10', 'bg-blue-500/10', 'shadow-sm');
+            btn.classList.add('dark:text-slate-400', 'text-slate-600');
+        });
+
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+        
+        const activeNav = document.getElementById(`nav-${tabName}`);
+        if (activeNav) {
+            activeNav.classList.remove('dark:text-slate-400', 'text-slate-600');
+            activeNav.classList.add('dark:text-amber-400', 'text-blue-600', 'dark:bg-amber-500/10', 'bg-blue-500/10', 'shadow-sm');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        triggerScrollReveal();
+    }
+
+    // Custom Order Generator
+    function handleCustomOrder(e) {
+        e.preventDefault();
+        const user = document.getElementById('custom-user').value;
+        const type = document.getElementById('custom-type').value;
+        const desc = document.getElementById('custom-desc').value;
+
+        const format = `=== THIRTEEN STUDIO COMMISSION ORDER ===\nClient: ${user}\nLayanan: ${type}\nDetail Proyek: ${desc}\n====================================`;
+        
+        navigator.clipboard.writeText(format).then(() => {
+            alert('Format Pemesanan Custom telah disalin! Anda akan diarahkan ke Discord Thirteen Studio.');
+            window.open('https://discord.gg/a2hbrNnF6v', '_blank');
+        });
+    }
+
+    // Direct Asset Purchase via Discord
+    function orderAsset(assetName) {
+        const format = `=== THIRTEEN STUDIO ASSET PURCHASE ===\nAsset Name: ${assetName}\n====================================`;
+        navigator.clipboard.writeText(format).then(() => {
+            alert(`Format pembelian "${assetName}" telah disalin! Silakan kirimkan di Discord kami.`);
+            window.open('https://discord.gg/a2hbrNnF6v', '_blank');
+        });
+    }
+
+    // Scroll Reveal Observer
+    function triggerScrollReveal() {
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+            const windowHeight = window.innerHeight;
+            const elementTop = el.getBoundingClientRect().top;
+            if (elementTop < windowHeight - 50) {
+                el.classList.add('active');
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        });
+    }
 
-        // Custom Order Clipboard & Redirect
-        function handleOrderSubmit(e) {
-            e.preventDefault();
-            const user = document.getElementById('order-user').value;
-            const type = document.getElementById('order-type').value;
-            const desc = document.getElementById('order-desc').value;
-
-            const format = `=== THIRTEEN STUDIO COMMISSION DRAFT ===\nUser: ${user}\nLayanan: ${type}\nDeskripsi Proyek: ${desc}\n====================================`;
-            
-            navigator.clipboard.writeText(format).then(() => {
-                alert('Format Custom Order telah disalin ke clipboard! Anda akan diarahkan ke Discord.');
-                window.open('https://discord.gg/a2hbrNnF6v', '_blank');
-            }).catch(() => {
-                window.open('https://discord.gg/a2hbrNnF6v', '_blank');
-            });
-        }
-    </script>
-</body>
-</html>
+    window.addEventListener('scroll', triggerScrollReveal);
+    window.addEventListener('load', triggerScrollReveal);
+</script>
